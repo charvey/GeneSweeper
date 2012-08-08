@@ -2,9 +2,14 @@
 {
     public struct Rule
     {
-        private ulong value;
+        public readonly ulong Value;
 
-        public ulong NeighborState { get { return value >> (2 + 6); } }
-        public byte ResultState { get { return (byte) ((value >> 2) & 63); } }
+        public Rule(ulong value)
+        {
+            Value = value;
+        }
+
+        public NeighborhoodState Pattern { get { return new NeighborhoodState(Value >> (4 + 6)); } }
+        public CellState Result { get { return new CellState((byte) ((Value >> 4) & 63)); } }
     }
 }

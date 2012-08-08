@@ -60,7 +60,7 @@ namespace GeneSweeper
                 Mines = mines;
             }
 
-            public static readonly Difficulty Small = new Difficulty(5, 5, 5);
+            public static readonly Difficulty Small = new Difficulty(8, 8, 8);
             public static readonly Difficulty Beginner = new Difficulty(9, 9, 10);
             public static readonly Difficulty Intermediate = new Difficulty(16, 16, 40);
             public static readonly Difficulty Advanced = new Difficulty(16, 30, 99);
@@ -155,8 +155,8 @@ namespace GeneSweeper
         {
             while (true)
             {  
-                int c = Random.Next(CurrentDifficulty.Width);
-                int r = Random.Next(CurrentDifficulty.Height);
+                int c = Random.Next(CurrentDifficulty.Width+1);
+                int r = Random.Next(CurrentDifficulty.Height+1);
 
                 if (!_board[r, c].Mine)
                 {
@@ -212,6 +212,21 @@ namespace GeneSweeper
                         Reveal(nCell);
                 }
             }
+        }
+
+        public ushort Score()
+        {
+            if (CurrentState == State.Lost)
+                return 0;
+
+            ushort score = 0;
+            foreach (var cell in _board)
+            {
+                if (cell.Mine && cell.Flagged)
+                    score++;
+            }
+
+            return score;
         }
 
         #endregion

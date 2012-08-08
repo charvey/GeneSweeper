@@ -6,27 +6,37 @@ namespace GeneSweeper
     {
         static void Main(string[] args)
         {
-            /*
-            Board b = new Board(16, 30, 99);
-            Console.WriteLine(b);
-            b.Flag(5,5);
-            Console.WriteLine(b);
-            b.Reveal(9,9);
-            Console.WriteLine(b);
-            */
-            Board b = new Board(Board.Difficulty.Small);
-            do
-            {
-                Console.Clear();
-                Console.WriteLine(b);
-                string[] input = (Console.ReadLine()??"").Split(' ');
-                if(input[0][0]=='r')
-                    b.Reveal(byte.Parse(input[1]),byte.Parse(input[2]));
-                if (input[0][0] == 'f')
-                    b.Flag(int.Parse(input[1]), int.Parse(input[2]));
-            } while (b.CurrentState == Board.State.Playing);
-            Console.WriteLine(b.CurrentState);
+            Grid g = new Grid(8,8);
+            Console.WriteLine(g);
             Console.ReadLine();
+
+            RuleSet s = RuleSet.GenerateRandom();
+            Console.WriteLine(g.Apply(s) ? "Halt" : "No halt");
+            Console.WriteLine(g);
+            Console.ReadLine();
+
+            s.Add(new Rule(2635248996351737968));
+            Console.WriteLine(g.Apply(s) ? "Halt" : "No halt");
+            Console.WriteLine(g);
+            Console.ReadLine();
+
+            s.Add(new Rule(2594073385365405936));
+            Console.WriteLine(g.Apply(s) ? "Halt" : "No halt");
+            Console.WriteLine(g);
+            Console.ReadLine();
+
+            s.Add(new Rule(1 << 4));
+            Console.WriteLine(g.Apply(s)?"Halt":"No halt");
+            Console.WriteLine(g);
+            Console.ReadLine();
+
+
+        }
+
+        static void PlayGame()
+        {
+            Player player = new HumanPlayer(Board.Difficulty.Small);
+            player.Play();
         }
     }
 }
