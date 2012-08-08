@@ -1,46 +1,19 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace GeneSweeper
 {
     public class RuleSet
     {
-        private const int LENGTH = 100000000;
-        private BitArray _ruleData;
+        private Dictionary<ulong,byte> rules;
 
         public RuleSet()
         {
-            _ruleData = new BitArray(LENGTH);
+            rules=new Dictionary<ulong, byte>();
         }
 
-        private RuleSet(byte[] bytes)
+        public void Add(Rule rule)
         {
-            if(bytes.Length!=LENGTH/8)
-                throw new ArgumentException("Incorrect ruleset size.");
-
-            _ruleData = new BitArray(bytes);
-        }
-
-        public void SaveToFile(string filename="file")
-        {
-            byte[] bytes = new byte[LENGTH/8];
-            _ruleData.CopyTo(bytes, 0);
-            File.WriteAllBytes(filename + ".gsr", bytes);
-        }
-
-        public static RuleSet ReadFromFile(string filename = "file")
-        {
-            byte[] bytes = File.ReadAllBytes(filename + ".gsr");
-            return new RuleSet(bytes);
-        }
-
-        public bool GetRuling()
-        {
-            throw new NotImplementedException();
+            rules[rule.NeighborState] = rule.ResultState;
         }
     }
 }
