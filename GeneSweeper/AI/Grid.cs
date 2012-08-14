@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
+using GeneSweeper.Game;
+using GeneSweeper.Util;
 
-namespace GeneSweeper
+namespace GeneSweeper.AI
 {
     public class Grid
     {
-        private CellState[,] values;
+        private SquareState[,] values;
         private readonly int _rows;
         private readonly int _cols;
 
@@ -19,31 +17,31 @@ namespace GeneSweeper
             _rows = rows;
             _cols = cols;
 
-            values = new CellState[_rows + 2,_cols + 2];
+            values = new SquareState[_rows + 2,_cols + 2];
 
             for (int i = 0; i <= _rows + 1; i++)
             {
-                values[i, 0] = CellState.Edge;
-                values[i, _cols + 1] = CellState.Edge;
+                values[i, 0] = SquareState.Edge;
+                values[i, _cols + 1] = SquareState.Edge;
             }
             for (int i = 0; i <= _cols + 1; i++)
             {
-                values[0, i] = CellState.Edge;
-                values[_rows + 1, i] = CellState.Edge;
+                values[0, i] = SquareState.Edge;
+                values[_rows + 1, i] = SquareState.Edge;
             }
 
             for (int r = 1; r <= _rows ; r++)
             {
                 for (int c = 1; c <= _cols; c++)
                 {
-                    values[r, c] = new CellState((byte) Random.Next(0, 9));
+                    values[r, c] = new SquareState((byte) Random.Next(0, 9));
                 }
             }
         }
 
         #region Accessors
 
-        public CellState GetCellState(byte row, byte col)
+        public SquareState GetCellState(byte row, byte col)
         {
             Debug.Assert(row > 0 && col > 0);
 
@@ -69,7 +67,7 @@ namespace GeneSweeper
 
         public bool Apply(RuleSet ruleSet)
         {
-            CellState[,] newValues = new CellState[_rows+2,_cols+2];
+            SquareState[,] newValues = new SquareState[_rows+2,_cols+2];
             bool halt = true;
 
             for (int i = 0; i <= _rows+1; i++)
@@ -87,7 +85,7 @@ namespace GeneSweeper
             {
                 for (byte c = 1; c <= _cols; c++)
                 {
-                    CellState? result = ruleSet.Get(GetNeighborhoodState(r, c));
+                    SquareState? result = ruleSet.Get(GetNeighborhoodState(r, c));
 
                     if(result.HasValue)
                     {

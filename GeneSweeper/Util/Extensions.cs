@@ -1,4 +1,4 @@
-﻿namespace GeneSweeper
+﻿namespace GeneSweeper.Util
 {
     public static class Extensions
     {

@@ -1,8 +1,8 @@
 ﻿namespace GeneticAlgorithm
 {
-    interface ICandidate
+    public interface ISpecimen
     {
         ulong Fitness();
-        
+        void Mutate();
     }
 }

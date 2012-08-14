@@ -1,4 +1,7 @@
 ﻿using System;
+using GeneSweeper.AI;
+using GeneSweeper.Game;
+using GeneSweeper.Game.Players;
 
 namespace GeneSweeper
 {

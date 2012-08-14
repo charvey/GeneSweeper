@@ -1,4 +1,6 @@
-﻿namespace GeneSweeper
+﻿using GeneSweeper.AI;
+
+namespace GeneSweeper.Util
 {
     public static class Random
     {

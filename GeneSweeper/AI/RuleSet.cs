@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
+using GeneSweeper.Game;
+using GeneSweeper.Util;
 
-namespace GeneSweeper
+namespace GeneSweeper.AI
 {
     public class RuleSet
     {
-        private Dictionary<NeighborhoodState,CellState> rules;
+        private Dictionary<NeighborhoodState,SquareState> rules;
 
         public RuleSet()
         {
-            rules = new Dictionary<NeighborhoodState, CellState>();
+            rules = new Dictionary<NeighborhoodState, SquareState>();
         }
 
         public void Add(Rule rule)
@@ -17,12 +18,18 @@ namespace GeneSweeper
             rules[rule.Pattern] = rule.Result;
         }
 
-        public CellState? Get(NeighborhoodState pattern)
+        public SquareState? Get(NeighborhoodState pattern)
         {
             if (rules.ContainsKey(pattern))
                 return rules[pattern];
 
             return null;
+        }
+
+        public void Remove(NeighborhoodState pattern)
+        {
+            if (rules.ContainsKey(pattern))
+                rules.Remove(pattern);
         }
 
         public uint Count { get { return (uint) rules.Count; } }

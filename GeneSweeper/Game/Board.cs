@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using Random = GeneSweeper.Util.Random;
 
-namespace GeneSweeper
+namespace GeneSweeper.Game
 {
     public class Board
     {

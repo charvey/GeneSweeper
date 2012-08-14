@@ -1,6 +1,6 @@
-﻿using System;
+﻿using GeneSweeper.AI;
 
-namespace GeneSweeper
+namespace GeneSweeper.Game.Players
 {
     class SmartPlayer:Player
     {
@@ -26,6 +26,20 @@ namespace GeneSweeper
             {
                 _grid.Apply(_ruleSet);
             }
+        }
+
+        public override string ToString()
+        {
+            string[] brd = Board.ToString().Split('\n');
+            string[] grd = _grid.ToString().Split('\n');
+
+            string str = "";
+            for (int i = 0; i < brd.Length;i++ )
+            {
+                str += brd[i] + grd[i] + '\n';
+            }
+
+            return str;
         }
     }
 }

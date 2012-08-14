@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using GeneSweeper.AI;
+using GeneSweeper.Game;
+using GeneSweeper.Game.Players;
+using GeneticAlgorithm;
 
 namespace GeneSweeper
 {
-    class RuleSetCandidate:ICandidate
+    class RuleSetCandidate:ISpecimen
     {
         private RuleSet _ruleSet;
 
@@ -31,6 +31,11 @@ namespace GeneSweeper
                 );
 
             return _fitness.Value;
+        }
+
+        public void Mutate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

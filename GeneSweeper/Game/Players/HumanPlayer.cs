@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GeneSweeper
+namespace GeneSweeper.Game.Players
 {
     public class HumanPlayer:Player
     {

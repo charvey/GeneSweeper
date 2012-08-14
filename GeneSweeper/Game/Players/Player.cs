@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace GeneSweeper
+﻿namespace GeneSweeper.Game.Players
 {
     public abstract class Player
     {

@@ -2,7 +2,8 @@
 
 namespace GeneticAlgorithm
 {
-    class Population:HashSet<ICandidate>
+    class Population<T>:HashSet<T> where T:ISpecimen
     {
+
     }
 }

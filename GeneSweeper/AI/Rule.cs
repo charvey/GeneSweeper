@@ -1,4 +1,6 @@
-﻿namespace GeneSweeper
+﻿using GeneSweeper.Game;
+
+namespace GeneSweeper.AI
 {
     public struct Rule
     {
@@ -10,6 +12,6 @@
         }
 
         public NeighborhoodState Pattern { get { return new NeighborhoodState(Value >> (4 + 6)); } }
-        public CellState Result { get { return new CellState((byte) ((Value >> 4) & 63)); } }
+        public SquareState Result { get { return new SquareState((byte) ((Value >> 4) & 63)); } }
     }
 }

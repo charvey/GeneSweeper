@@ -43,21 +43,28 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="Grid.cs" />
-    <Compile Include="HumanPlayer.cs" />
-    <Compile Include="ICandidate.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Game\Board.cs" />
+    <Compile Include="Game\SquareState.cs" />
+    <Compile Include="Util\Extensions.cs" />
+    <Compile Include="AI\Grid.cs" />
+    <Compile Include="Game\Players\HumanPlayer.cs" />
+    <Compile Include="Game\Players\Player.cs" />
     <Compile Include="RuleSetCandidate.cs" />
-    <Compile Include="SmartPlayer.cs" />
-    <Compile Include="States.cs" />
+    <Compile Include="Game\Players\SmartPlayer.cs" />
+    <Compile Include="Game\NeighborhoodState.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Random.cs" />
-    <Compile Include="Rule.cs" />
-    <Compile Include="RuleSet.cs" />
+    <Compile Include="Util\Random.cs" />
+    <Compile Include="AI\Rule.cs" />
+    <Compile Include="AI\RuleSet.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GeneticAlgorithm\GeneticAlgorithm.csproj">
+      <Project>{0D48099F-82C6-4662-907C-290D9D0297AC}</Project>
+      <Name>GeneticAlgorithm</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
