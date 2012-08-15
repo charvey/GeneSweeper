@@ -34,7 +34,7 @@ namespace GeneSweeper.AI
             {
                 for (int c = 1; c <= _cols; c++)
                 {
-                    values[r, c] = new SquareState((byte) Random.Next(0, 9));
+                    values[r, c] = new SquareState((byte) Random.NextInt(0, 9));
                 }
             }
         }

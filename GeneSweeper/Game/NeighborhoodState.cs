@@ -4,7 +4,7 @@
     {
         public readonly ulong Value;
 
-        private NeighborhoodState(ulong value)
+        public NeighborhoodState(ulong value)
         {
             Value = value >> (4 + 6);//TODO Make compile time
         }
@@ -31,8 +31,22 @@
             x = ((((((((((((((((((ulong)tr) << 6) | tc) << 6) | tl) << 6) | ml) << 6) | bl) << 6) | bc) << 6) | br) << 6) | mr) << 6) | mc);
             if (x < min)
                 min = x;
-            //TODO the rest of them: BLC,BLCC,BRC,BRCC
-
+            //Bottom Left, Clockwise
+            x = ((((((((((((((((((ulong)bl) << 6) | ml) << 6) | tl) << 6) | tc) << 6) | tr) << 6) | mr) << 6) | br) << 6) | bc) << 6) | mc);
+            if (x < min)
+                min = x;
+            //Bottom Left, Counter Clockwise
+            x = ((((((((((((((((((ulong)bl) << 6) | bc) << 6) | br) << 6) | mr) << 6) | tr) << 6) | tc) << 6) | tl) << 6) | ml) << 6) | mc);
+            if (x < min)
+                min = x;
+            //Bottom Right, Clockwise
+            x = ((((((((((((((((((ulong)br) << 6) | bc) << 6) | bl) << 6) | ml) << 6) | tl) << 6) | tc) << 6) | tr) << 6) | mr) << 6) | mc);
+            if (x < min)
+                min = x;
+            //Bottom Right, Counter Clockwise
+            x = ((((((((((((((((((ulong)br) << 6) | mr) << 6) | tr) << 6) | tc) << 6) | tl) << 6) | ml) << 6) | bl) << 6) | bc) << 6) | mc);
+            if (x < min)
+                min = x;
 
             Value = min;
         }

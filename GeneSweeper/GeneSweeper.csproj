@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\CellState.cs" />
     <Compile Include="Game\Board.cs" />
     <Compile Include="Game\SquareState.cs" />
     <Compile Include="Util\Extensions.cs" />

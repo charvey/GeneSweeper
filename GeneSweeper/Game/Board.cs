@@ -155,8 +155,8 @@ namespace GeneSweeper.Game
         {
             while (true)
             {  
-                int c = Random.Next(CurrentDifficulty.Width+1);
-                int r = Random.Next(CurrentDifficulty.Height+1);
+                int c = Random.NextInt(CurrentDifficulty.Width+1);
+                int r = Random.NextInt(CurrentDifficulty.Height+1);
 
                 if (!_board[r, c].Mine)
                 {
