@@ -6,7 +6,7 @@ namespace GeneSweeper.AI
 {
     public class Grid
     {
-        private SquareState[,] values;
+        private CellState[,] _grid;
         private readonly int _rows;
         private readonly int _cols;
 
@@ -17,35 +17,35 @@ namespace GeneSweeper.AI
             _rows = rows;
             _cols = cols;
 
-            values = new SquareState[_rows + 2,_cols + 2];
+            _grid = new CellState[_rows + 2,_cols + 2];
 
             for (int i = 0; i <= _rows + 1; i++)
             {
-                values[i, 0] = SquareState.Edge;
-                values[i, _cols + 1] = SquareState.Edge;
+                _grid[i, 0] = CellState.Edge;
+                _grid[i, _cols + 1] = CellState.Edge;
             }
             for (int i = 0; i <= _cols + 1; i++)
             {
-                values[0, i] = SquareState.Edge;
-                values[_rows + 1, i] = SquareState.Edge;
+                _grid[0, i] = CellState.Edge;
+                _grid[_rows + 1, i] = CellState.Edge;
             }
 
             for (int r = 1; r <= _rows ; r++)
             {
                 for (int c = 1; c <= _cols; c++)
                 {
-                    values[r, c] = new SquareState((byte) Random.NextInt(0, 9));
+                    _grid[r, c] = new CellState((byte) Random.NextInt(0, 9));
                 }
             }
         }
 
         #region Accessors
 
-        public SquareState GetCellState(byte row, byte col)
+        public CellState GetCellState(byte row, byte col)
         {
             Debug.Assert(row > 0 && col > 0);
 
-            return values[row, col];
+            return _grid[row, col];
         }
 
         public NeighborhoodState GetNeighborhoodState(byte row, byte col)
@@ -56,7 +56,7 @@ namespace GeneSweeper.AI
 
             for (int r = row - 1; r <= row + 1; r++)
                 for (int c = col - 1; c <= col + 1; c++)
-                    value = (value << 6) | ((ulong)values[r, c].Value);
+                    value = (value << 6) | ((ulong)_grid[r, c].Value);
 
             return new NeighborhoodState(value);
         }
@@ -67,25 +67,25 @@ namespace GeneSweeper.AI
 
         public bool Apply(RuleSet ruleSet)
         {
-            SquareState[,] newValues = new SquareState[_rows+2,_cols+2];
+            CellState[,] newValues = new CellState[_rows+2,_cols+2];
             bool halt = true;
 
             for (int i = 0; i <= _rows+1; i++)
             {
-                newValues[i, 0] = values[i, 0];
-                newValues[i, _cols + 1] = values[i, _cols + 1];
+                newValues[i, 0] = _grid[i, 0];
+                newValues[i, _cols + 1] = _grid[i, _cols + 1];
             }
             for (int i = 0; i <= _cols+1; i++)
             {
-                newValues[0, i] = values[0, i];
-                newValues[_rows+ 1, i] = values[_rows + 1, i];
+                newValues[0, i] = _grid[0, i];
+                newValues[_rows+ 1, i] = _grid[_rows + 1, i];
             }
 
             for (byte r = 1; r <= _rows; r++)
             {
                 for (byte c = 1; c <= _cols; c++)
                 {
-                    SquareState? result = ruleSet.Get(GetNeighborhoodState(r, c));
+                    CellState? result = ruleSet.Get(GetNeighborhoodState(r, c));
 
                     if(result.HasValue)
                     {
@@ -94,12 +94,12 @@ namespace GeneSweeper.AI
                     }
                     else
                     {
-                        newValues[r, c] = values[r, c];
+                        newValues[r, c] = _grid[r, c];
                     }
                 }
             }
 
-            values = newValues;
+            _grid = newValues;
 
             return halt;
         }
@@ -117,7 +117,7 @@ namespace GeneSweeper.AI
             {
                 for (int c = 0; c <= _cols + 1; c++)
                 {
-                    str += chars[values[r, c].Value];
+                    str += chars[_grid[r, c].Value];
                 }
                 str += '\n';
             }

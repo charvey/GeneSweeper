@@ -21,7 +21,7 @@ namespace GeneSweeper.Game
             }
         }
 
-        public struct Cell
+        public struct Square
         {
             public bool Mine;
             public bool Revealed;
@@ -81,13 +81,13 @@ namespace GeneSweeper.Game
 
         #region Private Fields
 
-        private readonly Cell[,] _board;
+        private readonly Square[,] _board;
 
         #endregion
 
         #region Public Fields
 
-        public Cell this[int r, int c]
+        public Square this[int r, int c]
         {
             get
             {
@@ -117,7 +117,7 @@ namespace GeneSweeper.Game
 
         public Board(Difficulty difficulty)
         {
-            _board = new Cell[difficulty.Height,difficulty.Width];
+            _board = new Square[difficulty.Height,difficulty.Width];
             CurrentState = State.Playing;
             CurrentDifficulty = difficulty;
 
@@ -245,8 +245,8 @@ namespace GeneSweeper.Game
                 str += '║';
                 for (byte c = 0; c < CurrentDifficulty.Width; c++)
                 {
-                    Cell cell = _board[r, c];
-                    str += cell.ToChar();
+                    Square square = _board[r, c];
+                    str += square.ToChar();
                 }
                 str += '║';
                 str += '\n';

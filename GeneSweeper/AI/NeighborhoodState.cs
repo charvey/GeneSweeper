@@ -1,4 +1,4 @@
-﻿namespace GeneSweeper.Game
+﻿namespace GeneSweeper.AI
 {
     public struct NeighborhoodState
     {

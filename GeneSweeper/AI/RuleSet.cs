@@ -6,11 +6,11 @@ namespace GeneSweeper.AI
 {
     public class RuleSet
     {
-        private Dictionary<NeighborhoodState,SquareState> rules;
+        private Dictionary<NeighborhoodState,CellState> rules;
 
         public RuleSet()
         {
-            rules = new Dictionary<NeighborhoodState, SquareState>();
+            rules = new Dictionary<NeighborhoodState, CellState>();
         }
 
         public void Add(Rule rule)
@@ -18,7 +18,7 @@ namespace GeneSweeper.AI
             rules[rule.Pattern] = rule.Result;
         }
 
-        public SquareState? Get(NeighborhoodState pattern)
+        public CellState? Get(NeighborhoodState pattern)
         {
             if (rules.ContainsKey(pattern))
                 return rules[pattern];
