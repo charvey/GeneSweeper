@@ -8,7 +8,8 @@ namespace GeneSweeper.Game.Players
         {
         }
 
-        public HumanPlayer(Board board) : base(board)
+        public HumanPlayer(Board board)
+            : base(board)
         {
         }
 
@@ -20,9 +21,9 @@ namespace GeneSweeper.Game.Players
                 Console.WriteLine(Board);
                 string[] input = (Console.ReadLine() ?? "").Split(' ');
                 if (input[0][0] == 'r')
-                    Board.Reveal(byte.Parse(input[1]), byte.Parse(input[2]));
+                    Board.Reveal(new GeneSweeper.Game.Board.Position(byte.Parse(input[1]), byte.Parse(input[2])));
                 if (input[0][0] == 'f')
-                    Board.Flag(int.Parse(input[1]), int.Parse(input[2]));
+                    Board.Flag(new GeneSweeper.Game.Board.Position(byte.Parse(input[1]), byte.Parse(input[2])));
             } while (Board.CurrentState == Board.State.Playing);
             Console.WriteLine(Board.CurrentState);
         }

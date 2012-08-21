@@ -1,4 +1,5 @@
 ﻿using GeneSweeper.AI;
+using GeneSweeper.Game.Boards;
 
 namespace GeneSweeper.Game.Players
 {
@@ -9,7 +10,7 @@ namespace GeneSweeper.Game.Players
         public ushort Iterations { get; private set; }
 
         public SmartPlayer(RuleSet ruleSet, Board.Difficulty difficulty)
-            : this(ruleSet, new Board(difficulty))
+            : this(ruleSet, new AutoBoard(difficulty))
         {
         }
 
