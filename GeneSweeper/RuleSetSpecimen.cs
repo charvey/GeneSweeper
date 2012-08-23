@@ -5,11 +5,11 @@ using GeneticAlgorithm;
 
 namespace GeneSweeper
 {
-    class RuleSetCandidate:ISpecimen
+    class RuleSetSpecimen:ISpecimen
     {
         private RuleSet _ruleSet;
 
-        public RuleSetCandidate(RuleSet ruleSet)
+        public RuleSetSpecimen(RuleSet ruleSet)
         {
             _ruleSet = ruleSet;
         }

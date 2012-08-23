@@ -47,11 +47,12 @@
     <Compile Include="AI\CellState.cs" />
     <Compile Include="Game\Boards\ManualBoard.cs" />
     <Compile Include="Game\Board.cs" />
+    <Compile Include="Menu.cs" />
     <Compile Include="Util\Extensions.cs" />
     <Compile Include="AI\Grid.cs" />
     <Compile Include="Game\Players\HumanPlayer.cs" />
     <Compile Include="Game\Player.cs" />
-    <Compile Include="RuleSetCandidate.cs" />
+    <Compile Include="RuleSetSpecimen.cs" />
     <Compile Include="Game\Players\SmartPlayer.cs" />
     <Compile Include="AI\NeighborhoodState.cs" />
     <Compile Include="Program.cs" />

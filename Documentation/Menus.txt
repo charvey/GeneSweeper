@@ -1,0 +1,19 @@
+Play a Game
+	Beginner
+	Intermediate
+	Advanced
+	Custom
+AI Tools
+	View Attempt
+		Display Stats
+		Evolve
+		Load Best
+			Best Living
+			Best Ever
+		Run Best
+			Fast
+			Step
+			Manual
+	New Attempt
+	Load Attempt
+	Close Attempt

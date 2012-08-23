@@ -1,4 +1,5 @@
 ﻿using GeneSweeper.Game.Boards;
+
 namespace GeneSweeper.Game.Players
 {
     public abstract class Player
