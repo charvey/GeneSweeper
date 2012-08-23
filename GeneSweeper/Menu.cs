@@ -55,13 +55,14 @@ namespace GeneSweeper
                 }
 
                 //Do Choice
+                Console.WriteLine();
                 if (choice != null)
                 {
                     if (choice.SubMenus != null)
                     {
                         choice.Display(state);
                     }
-                    else if (choice.Oper != null)
+                    if (choice.Oper != null)
                     {
                         choice.Oper(state);
                     }
