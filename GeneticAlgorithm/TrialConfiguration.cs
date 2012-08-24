@@ -5,8 +5,8 @@ using System.Text;
 
 namespace GeneticAlgorithm
 {
-    public class Evolver<T> where T:ISpecimen
+    public class TrialConfiguration
     {
-        
+        public int PopulationSize;
     }
 }

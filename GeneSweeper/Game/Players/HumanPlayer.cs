@@ -25,7 +25,7 @@ namespace GeneSweeper.Game.Players
                 if (input[0][0] == 'f')
                     Board.Flag(new GeneSweeper.Game.Board.Position(byte.Parse(input[1]), byte.Parse(input[2])));
             } while (Board.CurrentState == Board.State.Playing);
-            Console.WriteLine(Board.CurrentState);
+            Console.WriteLine(Board.CurrentState+" "+Board.Score());
         }
     }
 }

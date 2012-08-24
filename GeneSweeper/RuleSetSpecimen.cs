@@ -5,7 +5,7 @@ using GeneticAlgorithm;
 
 namespace GeneSweeper
 {
-    class RuleSetSpecimen:ISpecimen
+    class RuleSetSpecimen:Specimen<RuleSet>
     {
         private RuleSet _ruleSet;
 
@@ -15,7 +15,7 @@ namespace GeneSweeper
         }
 
         private ulong? _fitness;
-        public ulong Fitness()
+        public override ulong Fitness()
         {
             if(_fitness.HasValue)
                 return _fitness.Value;
@@ -33,9 +33,20 @@ namespace GeneSweeper
             return _fitness.Value;
         }
 
-        public void Mutate()
+        public override void Mutate()
         {
             throw new System.NotImplementedException();
+            _fitness = null;
+        }
+
+        public override Specimen<RuleSet> Crossover(Specimen<RuleSet> p1, Specimen<RuleSet> p2)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override RuleSet Value()
+        {
+            return _ruleSet;
         }
     }
 }

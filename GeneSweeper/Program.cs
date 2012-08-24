@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using GeneSweeper.AI;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Players;
 using System.Collections.Generic;
+using GeneticAlgorithm;
 
 namespace GeneSweeper
 {
@@ -26,7 +28,12 @@ namespace GeneSweeper
                 {
                     new Menu("Play a Game",null,new List<Menu>{
                         DifficultyMenu,
-                        new Menu("Play Game",todo)}),
+                        new Menu("Play Game",(s)=>{
+                            if (s.ContainsKey("Difficulty") && s["Difficulty"] is Board.Difficulty)
+                                (new HumanPlayer((Board.Difficulty)s["Difficulty"])).Play();
+                            else
+                                Console.WriteLine("Please Select Difficulty");
+                        })}),
                     new Menu("AI Tools",null,new List<Menu>{
                         new Menu("View Trial",null,new List<Menu>{
                             new Menu("Display Stats",todo),
@@ -41,7 +48,9 @@ namespace GeneSweeper
                                 new Menu("Manual",todo)
                             })
                         }),
-                        new Menu("New Trial",todo),
+                        new Menu("New Trial",(s)=>{
+                            s["Trial"] = new Trial<RuleSet,RuleSetSpecimen>(null);
+                        }),
                         new Menu("Load Trial",todo),
                         new Menu("Close Trial",todo)
                     })

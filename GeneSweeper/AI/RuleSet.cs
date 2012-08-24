@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using GeneSweeper.Game;
 using GeneSweeper.Util;
+using System;
+
+using Random = GeneSweeper.Util.Random;
 
 namespace GeneSweeper.AI
 {
-    public class RuleSet
+    public class RuleSet:ICloneable
     {
         private Dictionary<NeighborhoodState,CellState> rules;
 
@@ -33,6 +36,18 @@ namespace GeneSweeper.AI
         }
 
         public uint Count { get { return (uint) rules.Count; } }
+
+        public object Clone()
+        {
+            var clone = new RuleSet();
+
+            foreach (var x in rules)
+            {
+                clone.Add(new Rule(x.Key, x.Value));
+            }
+
+            return clone;
+        }
 
         public static RuleSet GenerateRandom(int n = 10000000)
         {

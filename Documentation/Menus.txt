@@ -4,7 +4,7 @@ Play a Game
 	Advanced
 	Custom
 AI Tools
-	View Attempt
+	View Trial
 		Display Stats
 		Evolve
 		Load Best
@@ -14,6 +14,6 @@ AI Tools
 			Fast
 			Step
 			Manual
-	New Attempt
-	Load Attempt
-	Close Attempt
+	New Trial
+	Load Trial
+	Close Trial

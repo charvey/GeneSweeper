@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace GeneticAlgorithm
 {
-    class Population<T>:HashSet<T> where T:ISpecimen
+    public class Population<TType,TSpecimen> where TType:ICloneable where TSpecimen:Specimen<TType>
     {
+
+
+        public void Evolve()
+        {
+            throw new NotImplementedException();
+        }
 
     }
 }
