@@ -1,4 +1,6 @@
-﻿namespace GeneSweeper.Util
+﻿using GeneSweeper.AI;
+
+namespace GeneSweeper.Util
 {
     public static class Extensions
     {

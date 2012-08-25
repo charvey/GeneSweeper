@@ -3,8 +3,6 @@ using GeneSweeper.Game;
 using GeneSweeper.Util;
 using System;
 
-using Random = GeneSweeper.Util.Random;
-
 namespace GeneSweeper.AI
 {
     public class RuleSet:ICloneable
@@ -47,16 +45,6 @@ namespace GeneSweeper.AI
             }
 
             return clone;
-        }
-
-        public static RuleSet GenerateRandom(int n = 10000000)
-        {
-            RuleSet ruleSet = new RuleSet();
-
-            for(int i=0;i<n;i++)
-                ruleSet.Add(Random.NextRule());
-
-            return ruleSet;
         }
     }
 }

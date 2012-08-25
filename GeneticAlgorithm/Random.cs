@@ -1,12 +1,11 @@
-﻿using GeneSweeper.AI;
-using GeneSweeper.Game;
-
-namespace GeneSweeper.Util
+﻿namespace GeneticAlgorithm
 {
     public static class Random
     {
         private static System.Random _rand;
         private static System.Random Rand {get { return _rand ?? (_rand = new System.Random()); }}
+
+        #region Bytes
 
         public static byte NextByte(byte maxValue)
         {
@@ -18,6 +17,10 @@ namespace GeneSweeper.Util
             return (byte)Rand.Next(minValue, maxValue);
         }
 
+        #endregion
+
+        #region Ints
+
         public static int NextInt(int maxValue)
         {
             return Rand.Next(maxValue);
@@ -28,25 +31,24 @@ namespace GeneSweeper.Util
             return Rand.Next(minValue, maxValue);
         }
 
+        #endregion
+
+        #region Ulong
+
         public static ulong NextUlong()
         {
-            return (((ulong) Rand.Next()) << 32) | ((ulong) Rand.Next());
+            return (((ulong)Rand.Next()) << 32) | ((ulong)Rand.Next());
         }
 
-        public static CellState NextCellState()
+        #endregion
+
+        #region Doubles
+
+        public static double NextDouble()
         {
-            return new CellState(NextByte(64));
+            return _rand.NextDouble();
         }
 
-        public static Rule NextRule()
-        {
-            NeighborhoodState nState = new NeighborhoodState();
-
-            
-
-            //result = result << 4;
-
-            return new Rule(0);
-        }
+        #endregion
     }
 }

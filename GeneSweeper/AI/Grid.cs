@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using GeneSweeper.Game;
 using GeneSweeper.Util;
+using GeneticAlgorithm;
 
 namespace GeneSweeper.AI
 {

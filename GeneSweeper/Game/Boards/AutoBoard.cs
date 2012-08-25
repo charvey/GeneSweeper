@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Random = GeneSweeper.Util.Random;
+using Random = GeneticAlgorithm.Random;
 
 namespace GeneSweeper.Game.Boards
 {

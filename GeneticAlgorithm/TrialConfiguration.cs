@@ -8,5 +8,7 @@ namespace GeneticAlgorithm
     public class TrialConfiguration
     {
         public int PopulationSize;
+        public double MutationRate;
+        public double CrossoverRate;
     }
 }
