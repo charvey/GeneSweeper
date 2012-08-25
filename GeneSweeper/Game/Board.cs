@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace GeneSweeper.Game
 {
@@ -81,13 +79,7 @@ namespace GeneSweeper.Game
 
         #region Public Fields
 
-        public Square this[int r, int c]
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-        }
+        public abstract Square this[Position p] { get; }
 
         public State CurrentState { get; protected set; }
         public Difficulty CurrentDifficulty { get; protected set; }

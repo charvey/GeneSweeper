@@ -2,49 +2,38 @@
 using GeneSweeper.Game;
 using GeneSweeper.Util;
 using System;
+using GeneticAlgorithm;
 
 namespace GeneSweeper.AI
 {
-    public class RuleSet:ICloneable
+    public class RuleSet
     {
-        private Dictionary<NeighborhoodState,CellState> rules;
+        public Dictionary<NeighborhoodState, CellState> Rules { get; private set; }
 
         public RuleSet()
         {
-            rules = new Dictionary<NeighborhoodState, CellState>();
+            Rules = new Dictionary<NeighborhoodState, CellState>();
         }
 
         public void Add(Rule rule)
         {
-            rules[rule.Pattern] = rule.Result;
+            Rules[rule.Pattern] = rule.Result;
         }
 
         public CellState? Get(NeighborhoodState pattern)
         {
-            if (rules.ContainsKey(pattern))
-                return rules[pattern];
+            if (Rules.ContainsKey(pattern))
+                return Rules[pattern];
 
             return null;
         }
 
         public void Remove(NeighborhoodState pattern)
         {
-            if (rules.ContainsKey(pattern))
-                rules.Remove(pattern);
+            if (Rules.ContainsKey(pattern))
+                Rules.Remove(pattern);
         }
 
-        public uint Count { get { return (uint) rules.Count; } }
-
-        public object Clone()
-        {
-            var clone = new RuleSet();
-
-            foreach (var x in rules)
-            {
-                clone.Add(new Rule(x.Key, x.Value));
-            }
-
-            return clone;
-        }
+        
     }
 }

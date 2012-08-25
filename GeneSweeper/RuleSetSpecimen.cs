@@ -1,52 +1,86 @@
-﻿using GeneSweeper.AI;
+﻿using System;
+using GeneSweeper.AI;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Players;
 using GeneticAlgorithm;
 
 namespace GeneSweeper
 {
-    class RuleSetSpecimen:Specimen<RuleSet>
+    public class RuleSetSpecimen:ISpecimen
     {
-        private RuleSet _ruleSet;
+        public RuleSet RuleSet;
+
+        public RuleSetSpecimen()
+        {
+            //TODO Generate random ruleset
+        }
 
         public RuleSetSpecimen(RuleSet ruleSet)
         {
-            _ruleSet = ruleSet;
+            RuleSet = ruleSet;
         }
 
         private ulong? _fitness;
-        public override ulong Fitness()
+        public ulong Fitness()
         {
             if(_fitness.HasValue)
                 return _fitness.Value;
 
-            SmartPlayer player = new SmartPlayer(_ruleSet, Board.Difficulty.Small);
-            player.Play();
+            //TODO Implement fitness
 
-            _fitness =
-                (
-                    (((ulong) player.Result) << 48) |
-                    (((ulong) player.Iterations) << 32) |
-                    ~_ruleSet.Count
-                );
+            _fitness = 0;
 
             return _fitness.Value;
         }
 
-        public override void Mutate()
+        public void Mutate()
         {
-            throw new System.NotImplementedException();
+            //TODO Implement mutate
             _fitness = null;
         }
 
-        public override Specimen<RuleSet> Crossover(Specimen<RuleSet> p1, Specimen<RuleSet> p2)
+        public ISpecimen Crossover(ISpecimen other)
         {
-            throw new System.NotImplementedException();
+            //TODO Implement crossover
+            return null;
         }
 
-        public override RuleSet Value()
+        public RuleSet Value()
         {
-            return _ruleSet;
+            return RuleSet;
+        }
+    }
+
+    public class RuleSetSpecimenStringer:IStringer<RuleSetSpecimen>
+    {
+        public string ValueToString(RuleSetSpecimen v)
+        {
+            string str = "";
+
+            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
+
+            foreach (var rule in v.RuleSet.Rules)
+            {
+                ulong r = ((rule.Key.Value << 10) | (((ulong) rule.Value.Value) << 4));
+
+                str += Convert.ToBase64String(BitConverter.GetBytes(r));
+            }
+
+            return str;
+        }
+
+        public RuleSetSpecimen StringToValue(string s)
+        {
+            var bytes = Convert.FromBase64String(s);
+
+            var set = new RuleSet();
+
+            for(int i=0;i<bytes.Length;i+=8)
+            {
+                set.Add(new Rule(BitConverter.ToUInt64(bytes, i)));
+            }
+
+            return new RuleSetSpecimen(set);
         }
     }
 }

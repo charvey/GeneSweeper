@@ -4,28 +4,70 @@ using System.Linq;
 
 namespace GeneticAlgorithm
 {
-    public class Population<TType,TSpecimen> where TType:ICloneable where TSpecimen:Specimen<TType>
+    public class Population<TSpecimen> where TSpecimen:ISpecimen,new()
     {
         private TSpecimen[] _population;
-        private readonly TrialConfiguration _configuration;
+        private readonly TrialConfiguration<TSpecimen> _configuration;
 
-        public Population(TrialConfiguration trialConfiguration)
+        private ulong? _totalFitness;
+        private ulong TotalFitness
+        {
+            get
+            {
+                if (_totalFitness.HasValue)
+                    return _totalFitness.Value;
+
+                _totalFitness = 0;
+
+                foreach (var specimen in _population)
+                {
+                    _totalFitness += specimen.Fitness();
+                }
+
+                return _totalFitness.Value;
+            }
+
+        } 
+
+        public Population(TrialConfiguration<TSpecimen> trialConfiguration)
         {
             _configuration = trialConfiguration;
-            _population = new TSpecimen[_configuration.PopulationSize];
+            
+            Initialize();
             Order();
         }
 
         #region Public Accessors
 
-        public TType GetBest()
+        public TSpecimen GetBest()
         {
-            throw new NotImplementedException();
+            return _population[0];
         }
 
         public GenerationScore GetScore()
         {
-            throw new NotImplementedException();
+            return new GenerationScore
+                       {
+                           BestScore = _population[0].Fitness(),
+                           MeanScore = TotalFitness/((ulong) _configuration.PopulationSize),
+                           WorstScore = _population[_configuration.PopulationSize - 1].Fitness(),
+                           Percentiles = Enumerable.Range(1, GenerationScore.PercentileSegments - 1)
+                               .Select(p => p*(_configuration.PopulationSize/GenerationScore.PercentileSegments))
+                               .Select(i => _population[i].Fitness())
+                               .ToArray()
+                       };
+        }
+
+        public string[] StringValue()
+        {
+            string[] ret = new string[_configuration.PopulationSize];
+
+            for(int i=0;i<_configuration.PopulationSize;i++)
+            {
+                ret[i] = _configuration.Stringer.ValueToString(_population[i]);
+            }
+
+            return ret;
         }
 
         #endregion
@@ -48,6 +90,16 @@ namespace GeneticAlgorithm
 
         #region Private Methods
 
+        private void Initialize()
+        {
+            _population = new TSpecimen[_configuration.PopulationSize];
+
+            for (int i = 0; i < _configuration.PopulationSize;i++)
+            {
+                _population[i] = new TSpecimen();
+            }
+        }
+
         private void Crossover()
         {
             throw new NotImplementedException();
@@ -55,7 +107,7 @@ namespace GeneticAlgorithm
 
         private void Mutate()
         {
-            foreach (var specimen in _population.AsParallel())
+            foreach (var specimen in _population)
             {
                 if(Random.NextDouble()<_configuration.MutationRate)
                 {

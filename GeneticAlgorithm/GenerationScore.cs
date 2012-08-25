@@ -1,16 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace GeneticAlgorithm
 {
     public class GenerationScore
     {
-        public int BestScore;
-        public int MeanScore;
-        public int WorstScore;
+        public ulong BestScore;
+        public ulong MeanScore;
+        public ulong WorstScore;
 
-        public int[] Percentiles;
+        public ulong[] Percentiles;
+
+        public const int PercentileSegments = 10;
+
+        private static GenerationScoreStringer _stringer;
+        public static GenerationScoreStringer Stringer
+        {
+            get { return _stringer ?? (_stringer = new GenerationScoreStringer()); }
+        }
+    }
+
+    public class GenerationScoreStringer : IStringer<GenerationScore>
+    {
+        public string ValueToString(GenerationScore v)
+        {
+            return (new[] {v.BestScore, v.MeanScore, v.WorstScore})
+                .Concat(v.Percentiles)
+                .Aggregate("", (ag, val) => ag + '\t' + val);
+        }
+
+        public GenerationScore StringToValue(string s)
+        {
+            var vals = s.Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries)
+                .Select(v => Convert.ToUInt64(s))
+                .ToList();
+
+            return new GenerationScore
+                       {
+                           BestScore = vals[0],
+                           MeanScore = vals[1],
+                           WorstScore = vals[2],
+                           Percentiles = vals.Skip(3).ToArray()
+                       };
+        }
     }
 }

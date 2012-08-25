@@ -22,7 +22,7 @@ namespace GeneSweeper
                         new Menu("Intermediate",(s)=>{s["Difficulty"]=Board.Difficulty.Intermediate;}),
                         new Menu("Advanced",(s)=>{s["Difficulty"]=Board.Difficulty.Advanced;})
                     });
-            Action<Dictionary<string, object>> todo = (s) => { Console.Out.WriteLine("TODO"); };
+            Action<Dictionary<string, object>> todo = (s) => Console.Out.WriteLine("TODO");
 
             var menu = new Menu("Main Menu", null, new List<Menu>
                 {
@@ -48,8 +48,18 @@ namespace GeneSweeper
                                 new Menu("Manual",todo)
                             })
                         }),
-                        new Menu("New Trial",(s)=>{
-                            s["Trial"] = new Trial<RuleSet,RuleSetSpecimen>(null);
+                        new Menu("New Trial",(s)=>
+                        {
+                            var config = new TrialConfiguration<RuleSetSpecimen>
+                            {
+                                CrossoverRate = Menu.PromptFor<Double>("Enter Crossover Rate"),
+                                MutationRate = Menu.PromptFor<Double>("Enter Mutation Rate"),
+                                PopulationSize = Menu.PromptFor<Int32>("Enter Population Size"),
+
+                                Stringer = new RuleSetSpecimenStringer()
+                            };
+
+                            s["Trial"] = new Trial<RuleSetSpecimen>(config);
                         }),
                         new Menu("Load Trial",todo),
                         new Menu("Close Trial",todo)

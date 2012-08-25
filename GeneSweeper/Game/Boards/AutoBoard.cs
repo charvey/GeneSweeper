@@ -111,6 +111,11 @@ namespace GeneSweeper.Game.Boards
 
         #region Public Methods
 
+        public override Square this[Position p]
+        {
+            get { return _board[p.Row, p.Column]; }
+        }
+
         public override void Flag(Position position)
         {
             if (_board[position.Row, position.Column].Revealed)

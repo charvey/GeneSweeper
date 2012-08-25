@@ -6,24 +6,24 @@ using System.Text;
 
 namespace GeneticAlgorithm
 {
-    public class Trial<TType, TSpecimen> where TType:ICloneable where TSpecimen : Specimen<TType> 
+    public class Trial<TSpecimen> where TSpecimen:ISpecimen,new()
     {
-        public Population<TType,TSpecimen> Population { get; private set; }
-        public List<TType> GenerationBests { get; private set; }
+        public Population<TSpecimen> Population { get; private set; }
+        public List<TSpecimen> GenerationBests { get; private set; }
         public List<GenerationScore> GenerationScores { get; private set; }
         public int Generation { get; private set; }
 
-        public readonly TrialConfiguration TrialConfig;
+        public readonly TrialConfiguration<TSpecimen> TrialConfig;
 
         public readonly string Name;
 
-        public Trial(TrialConfiguration trialConfig)
+        public Trial(TrialConfiguration<TSpecimen> trialConfig)
         {
             TrialConfig = trialConfig;
             Name = DateTime.UtcNow.ToString("yyMMddHHmm");
-            Population = new Population<TType, TSpecimen>(trialConfig);
-            GenerationBests = new List<TType> { Population.GetBest() };
-            GenerationScores=new List<GenerationScore>{Population.GetScore()};
+            Population = new Population<TSpecimen>(trialConfig);
+            GenerationBests = new List<TSpecimen> { Population.GetBest() };
+            GenerationScores = new List<GenerationScore> { Population.GetScore() };
             Generation = 0;
 
             SaveState();
@@ -44,6 +44,9 @@ namespace GeneticAlgorithm
 
         private void SaveState()
         {
+            if (!Directory.Exists(Name))
+                Directory.CreateDirectory(Name);
+
             SavePopulation();
             SaveScore();
             SaveBest();
@@ -51,18 +54,17 @@ namespace GeneticAlgorithm
 
         private void SavePopulation()
         {
-            File.Delete(FilePath("CurrentPopulation"));
-            File.WriteAllLines("CurrentPopulation","All of the RuleSets".Select(c=>""+c).ToArray());
+            File.WriteAllLines(FilePath("CurrentPopulation"), Population.StringValue());
         }
 
         private void SaveScore()
         {
-            File.AppendAllText(FilePath("Scores"), Generation + "\n");
+            File.AppendAllText(FilePath("Scores"), GenerationScore.Stringer.ValueToString(GenerationScores[Generation]));
         }
 
         private void SaveBest()
         {
-            File.AppendAllText(FilePath("Bests"),Generation+"\n");
+            File.AppendAllText(FilePath("Bests"), TrialConfig.Stringer.ValueToString(GenerationBests[Generation]));
         }
 
         private string FilePath(string name)
@@ -72,7 +74,8 @@ namespace GeneticAlgorithm
 
         #endregion
 
-        public static Trial<TType,TSpecimen> Load(string name){
+        public static Trial<TSpecimen> Load(string name, IStringer<TSpecimen> stringer)
+        {
             throw new NotImplementedException();
         }
     }

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GeneticAlgorithm
+﻿namespace GeneticAlgorithm
 {
-    public class TrialConfiguration
+    public class TrialConfiguration<ISpecimen>
     {
         public int PopulationSize;
         public double MutationRate;
         public double CrossoverRate;
+
+        public IStringer<ISpecimen> Stringer;
     }
 }

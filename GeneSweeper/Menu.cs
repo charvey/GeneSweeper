@@ -8,22 +8,22 @@ namespace GeneSweeper
     public class Menu
     {
         public readonly string Text;
-        public readonly Action<Dictionary<string,object>> Oper;
+        public readonly Action<Dictionary<string, object>> Oper;
         public readonly List<Menu> SubMenus;
 
-        public Menu(string text, Action<Dictionary<string,object>> oper, List<Menu> subMenus=null)
+        public Menu(string text, Action<Dictionary<string, object>> oper, List<Menu> subMenus = null)
         {
             Text = text;
             Oper = oper;
             SubMenus = subMenus;
         }
 
-        public void Display(Dictionary<string,object> state)
+        public void Display(Dictionary<string, object> state)
         {
             Menu choice;
             int input;
 
-            while(true)
+            while (true)
             {
                 //Display Menu
                 Console.Out.WriteLine(Text);
@@ -66,6 +66,23 @@ namespace GeneSweeper
                     {
                         choice.Oper(state);
                     }
+                }
+            }
+        }
+
+        public static T PromptFor<T>(string prompt) where T : IConvertible
+        {
+            while (true)
+            {
+                Console.WriteLine(prompt);
+
+                try
+                {
+                    return (T) Convert.ChangeType(Console.ReadLine(), typeof (T));
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Input must be of type: " + typeof (T).Name);
                 }
             }
         }
