@@ -17,14 +17,18 @@ namespace GeneticAlgorithm
 
         public readonly string Name;
 
-        public Trial(TrialConfiguration<TSpecimen> trialConfig)
+        public Trial(string name, TrialConfiguration<TSpecimen> trialConfig)
         {
+            Name = name;
             TrialConfig = trialConfig;
-            Name = DateTime.UtcNow.ToString("yyMMddHHmm");
+            
             Population = new Population<TSpecimen>(trialConfig);
             GenerationBests = new List<TSpecimen> { Population.GetBest() };
             GenerationScores = new List<GenerationScore> { Population.GetScore() };
             Generation = 0;
+
+            if (Directory.Exists(name))
+                Directory.Delete(name, true);
 
             SaveState();
         }

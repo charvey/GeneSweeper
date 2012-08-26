@@ -17,6 +17,15 @@
             return (byte)Rand.Next(minValue, maxValue);
         }
 
+        public static byte[] NextBytes(int count)
+        {
+            byte[] bytes = new byte[count];
+
+            Rand.NextBytes(bytes);
+
+            return bytes;
+        }
+
         #endregion
 
         #region Ints

@@ -3,6 +3,7 @@ using GeneSweeper.AI;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Players;
 using GeneticAlgorithm;
+using Random = GeneticAlgorithm.Random;
 
 namespace GeneSweeper
 {
@@ -12,7 +13,26 @@ namespace GeneSweeper
 
         public RuleSetSpecimen()
         {
-            //TODO Generate random ruleset
+            RuleSet = new RuleSet();
+
+            const int rules = 1000000;
+
+            byte[] buffer = Random.NextBytes(10*rules);
+
+            for (int i = 0; i < rules; i++)
+                RuleSet.Add(new Rule(
+                                new NeighborhoodState(
+                                    (byte) (buffer[10*i + 0] & 63),
+                                    (byte) (buffer[10*i + 1] & 63),
+                                    (byte) (buffer[10*i + 2] & 63),
+                                    (byte) (buffer[10*i + 3] & 63),
+                                    (byte) (buffer[10*i + 4] & 63),
+                                    (byte) (buffer[10*i + 5] & 63),
+                                    (byte) (buffer[10*i + 6] & 63),
+                                    (byte) (buffer[10*i + 7] & 63),
+                                    (byte) (buffer[10*i + 8] & 63)
+                                    ),
+                                new CellState((byte)(buffer[10 * i + 9] & 63))));
         }
 
         public RuleSetSpecimen(RuleSet ruleSet)

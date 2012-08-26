@@ -1,4 +1,6 @@
-﻿namespace GeneSweeper.AI
+﻿using GeneticAlgorithm;
+
+namespace GeneSweeper.AI
 {
     public struct CellState
     {
@@ -6,7 +8,7 @@
 
         public CellState(byte value)
         {
-            Value = (byte)(value & 63);//TODO Make compile time
+            Value = (byte)((value << 2) >> 2);
         }
 
         public static CellState Adj0 = new CellState(00);
@@ -21,5 +23,12 @@
         public static CellState Edge = new CellState(09);
         public static CellState Flag = new CellState(10);
         public static CellState Safe = new CellState(11);
+
+        public const byte StateCount = 64; //2^6
+
+        public static CellState GetRandom()
+        {
+            return new CellState(Random.NextByte(StateCount));
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using GeneSweeper.AI;
 using GeneSweeper.Game;
@@ -50,16 +51,17 @@ namespace GeneSweeper
                         }),
                         new Menu("New Trial",(s)=>
                         {
-                            var config = new TrialConfiguration<RuleSetSpecimen>
-                            {
-                                CrossoverRate = Menu.PromptFor<Double>("Enter Crossover Rate"),
-                                MutationRate = Menu.PromptFor<Double>("Enter Mutation Rate"),
-                                PopulationSize = Menu.PromptFor<Int32>("Enter Population Size"),
+                            s["Trial"] = new Trial<RuleSetSpecimen>(
+                                Menu.PromptFor<string>("Enter Name"),
+                                    new TrialConfiguration<RuleSetSpecimen>
+                                    {
+                                        CrossoverRate = Menu.PromptFor<Double>("Enter Crossover Rate"),
+                                        MutationRate = Menu.PromptFor<Double>("Enter Mutation Rate"),
+                                        PopulationSize = Menu.PromptFor<Int32>("Enter Population Size"),
 
-                                Stringer = new RuleSetSpecimenStringer()
-                            };
-
-                            s["Trial"] = new Trial<RuleSetSpecimen>(config);
+                                        Stringer = new RuleSetSpecimenStringer()
+                                    }
+                                );
                         }),
                         new Menu("Load Trial",todo),
                         new Menu("Close Trial",todo)
