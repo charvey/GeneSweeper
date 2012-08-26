@@ -32,7 +32,7 @@ namespace GeneticAlgorithm
         public GenerationScore StringToValue(string s)
         {
             var vals = s.Split(new[] {'\t'}, StringSplitOptions.RemoveEmptyEntries)
-                .Select(v => Convert.ToUInt64(s))
+                .Select(v => Convert.ToUInt64(v))
                 .ToList();
 
             return new GenerationScore

@@ -9,31 +9,22 @@ namespace GeneticAlgorithm
         private TSpecimen[] _population;
         private readonly TrialConfiguration<TSpecimen> _configuration;
 
-        private ulong? _totalFitness;
-        private ulong TotalFitness
-        {
-            get
-            {
-                if (_totalFitness.HasValue)
-                    return _totalFitness.Value;
-
-                _totalFitness = 0;
-
-                foreach (var specimen in _population)
-                {
-                    _totalFitness += specimen.Fitness();
-                }
-
-                return _totalFitness.Value;
-            }
-
-        } 
+        private ulong[] CumulativeFitness;
+        private ulong TotalFitness;
 
         public Population(TrialConfiguration<TSpecimen> trialConfiguration)
         {
             _configuration = trialConfiguration;
             
             Initialize();
+            Order();
+        }
+
+        public Population(TrialConfiguration<TSpecimen> trialConfiguration,TSpecimen[] population)
+        {
+            _configuration = trialConfiguration;
+            _population = population;
+
             Order();
         }
 
@@ -58,16 +49,12 @@ namespace GeneticAlgorithm
                        };
         }
 
-        public string[] StringValue()
+        public IEnumerable<string> StringValue()
         {
-            string[] ret = new string[_configuration.PopulationSize];
-
             for(int i=0;i<_configuration.PopulationSize;i++)
             {
-                ret[i] = _configuration.Stringer.ValueToString(_population[i]);
+                yield return _configuration.Stringer.ValueToString(_population[i]);
             }
-
-            return ret;
         }
 
         #endregion
@@ -80,7 +67,6 @@ namespace GeneticAlgorithm
         /// <param name="configuration"></param>
         public void Evolve()
         {
-            throw new NotImplementedException();
             Crossover();
             Mutate();
             Order();
@@ -102,7 +88,28 @@ namespace GeneticAlgorithm
 
         private void Crossover()
         {
-            throw new NotImplementedException();
+            var newPopulation = new TSpecimen[_configuration.PopulationSize];
+
+            int carryoverPoint = (int) (_configuration.CarryoverRate*_configuration.PopulationSize);
+
+            for (int i = 0; i < carryoverPoint; i++)
+            {
+                newPopulation[i] = _population[i];
+            }
+            for (int i = carryoverPoint; i < _configuration.PopulationSize; i++)
+            {
+                ulong p1cf = (ulong) (Random.NextDouble()*TotalFitness),
+                      p2cf = (ulong) (Random.NextDouble()*TotalFitness);
+
+                int p1i = Enumerable.Range(0, _configuration.PopulationSize)
+                    .First(index => CumulativeFitness[index] >= p1cf),
+                    p2i = Enumerable.Range(0, _configuration.PopulationSize)
+                        .First(index => CumulativeFitness[index] >= p2cf);
+
+                newPopulation[i] = (TSpecimen) _population[p1i].Crossover(_population[p2i]);
+            }
+
+            _population = newPopulation;
         }
 
         private void Mutate()
@@ -119,6 +126,14 @@ namespace GeneticAlgorithm
         private void Order()
         {
             _population = _population.OrderBy(s => s.Fitness()).ToArray();
+
+            CumulativeFitness=new ulong[_population.Length];
+            TotalFitness = 0;
+            for (int i = 0; i < _population.Length;i++ )
+            {
+                TotalFitness += _population[i].Fitness();
+                CumulativeFitness[i] = TotalFitness;
+            }
         }
 
         #endregion

@@ -17,6 +17,25 @@ namespace GeneticAlgorithm
 
         public readonly string Name;
 
+        public Trial(string name,IStringer<TSpecimen> stringer)
+        {
+            Name = name;
+
+            TrialConfig = new TrialConfiguration<TSpecimen>();
+            TrialConfig = TrialConfig.ConfigStringer.StringToValue(File.ReadAllText(name + "/Config"));
+            TrialConfig.Stringer = stringer;
+
+            Population = new Population<TSpecimen>(TrialConfig,
+                                                   File.ReadAllLines(name + "/CurrentPopulation")
+                                                       .Select(l => TrialConfig.Stringer.StringToValue(l))
+                                                       .ToArray());
+            GenerationBests = File.ReadAllLines(name + "/Bests")
+                .Select(l => TrialConfig.Stringer.StringToValue(l)).ToList();
+            GenerationScores = File.ReadAllLines(name + "/Scores")
+                .Select(l => GenerationScore.Stringer.StringToValue(l)).ToList();
+            Generation = GenerationScores.Count - 1;
+        }
+
         public Trial(string name, TrialConfiguration<TSpecimen> trialConfig)
         {
             Name = name;
@@ -51,9 +70,15 @@ namespace GeneticAlgorithm
             if (!Directory.Exists(Name))
                 Directory.CreateDirectory(Name);
 
+            SaveConfig();
             SavePopulation();
             SaveScore();
             SaveBest();
+        }
+
+        private void SaveConfig()
+        {
+            File.WriteAllText(FilePath("Config"), TrialConfig.ConfigStringer.ValueToString(TrialConfig));
         }
 
         private void SavePopulation()
@@ -77,10 +102,5 @@ namespace GeneticAlgorithm
         }
 
         #endregion
-
-        public static Trial<TSpecimen> Load(string name, IStringer<TSpecimen> stringer)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

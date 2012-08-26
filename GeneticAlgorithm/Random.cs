@@ -55,7 +55,7 @@
 
         public static double NextDouble()
         {
-            return _rand.NextDouble();
+            return Rand.NextDouble();
         }
 
         #endregion

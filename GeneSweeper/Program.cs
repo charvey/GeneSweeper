@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using GeneSweeper.AI;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Players;
 using System.Collections.Generic;
@@ -37,8 +34,13 @@ namespace GeneSweeper
                         })}),
                     new Menu("AI Tools",null,new List<Menu>{
                         new Menu("View Trial",null,new List<Menu>{
-                            new Menu("Display Stats",todo),
-                            new Menu("Evolve",todo),
+                            new Menu("Display Stats",s=>
+                            {
+                                Trial<RuleSetSpecimen> trial = s["Trial"] as Trial<RuleSetSpecimen>;
+
+                                Console.WriteLine("Generation: " + trial.Generation);
+                            }),
+                            new Menu("Evolve",s=>(s["Trial"] as Trial<RuleSetSpecimen>).Evolve()),
                             new Menu("Load Best",null,new List<Menu>{
                                 new Menu ("Best Living",todo),
                                 new Menu("Best Ever",todo)
@@ -55,7 +57,7 @@ namespace GeneSweeper
                                 Menu.PromptFor<string>("Enter Name"),
                                     new TrialConfiguration<RuleSetSpecimen>
                                     {
-                                        CrossoverRate = Menu.PromptFor<Double>("Enter Crossover Rate"),
+                                        CarryoverRate = Menu.PromptFor<Double>("Enter Carryover Rate"),
                                         MutationRate = Menu.PromptFor<Double>("Enter Mutation Rate"),
                                         PopulationSize = Menu.PromptFor<Int32>("Enter Population Size"),
 
@@ -63,8 +65,12 @@ namespace GeneSweeper
                                     }
                                 );
                         }),
-                        new Menu("Load Trial",todo),
-                        new Menu("Close Trial",todo)
+                        new Menu("Load Trial",s=>
+                        {
+                            s["Trial"] = new Trial<RuleSetSpecimen>(
+                                Menu.PromptFor<string>("Enter Name"),
+                                new RuleSetSpecimenStringer());
+                        })
                     })
                 });
 

@@ -10,7 +10,7 @@ namespace GeneSweeper.AI
 
         public NeighborhoodState(ulong value)
         {
-            Value = value >> (4 + 6);//TODO Make compile time
+            Value = value >> (4 + 6);
         }
 
         public NeighborhoodState(byte tl, byte tc, byte tr, byte ml, byte mc, byte mr,byte bl,byte bc,byte br)

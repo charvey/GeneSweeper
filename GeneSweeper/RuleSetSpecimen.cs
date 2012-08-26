@@ -15,7 +15,7 @@ namespace GeneSweeper
         {
             RuleSet = new RuleSet();
 
-            const int rules = 1000000;
+            const int rules = 100000;
 
             byte[] buffer = Random.NextBytes(10*rules);
 
@@ -75,18 +75,27 @@ namespace GeneSweeper
     {
         public string ValueToString(RuleSetSpecimen v)
         {
-            string str = "";
+            byte[] bytes = new byte[8*v.RuleSet.Rules.Keys.Count];
 
-            string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
-
+            int i = 0;
             foreach (var rule in v.RuleSet.Rules)
             {
                 ulong r = ((rule.Key.Value << 10) | (((ulong) rule.Value.Value) << 4));
+                var b = BitConverter.GetBytes(r);
 
-                str += Convert.ToBase64String(BitConverter.GetBytes(r));
+                bytes[i + 0] = b[0];
+                bytes[i + 1] = b[1];
+                bytes[i + 2] = b[2];
+                bytes[i + 3] = b[3];
+                bytes[i + 4] = b[4];
+                bytes[i + 5] = b[5];
+                bytes[i + 6] = b[6];
+                bytes[i + 7] = b[7];
+
+                i += 8;
             }
 
-            return str;
+            return Convert.ToBase64String(bytes);
         }
 
         public RuleSetSpecimen StringToValue(string s)
