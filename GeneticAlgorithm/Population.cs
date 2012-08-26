@@ -91,7 +91,7 @@ namespace GeneticAlgorithm
         {
             _population = new TSpecimen[_configuration.PopulationSize];
 
-            foreach (var i in Enumerable.Range(0,_configuration.PopulationSize))
+            foreach (var i in Enumerable.Range(0,_configuration.PopulationSize).AsParallel())
             {
                 _population[i] = new TSpecimen();
             }

@@ -40,7 +40,12 @@ namespace GeneSweeper
 
                                 Console.WriteLine("Generation: " + trial.Generation);
                             }),
-                            new Menu("Evolve",s=>(s["Trial"] as Trial<RuleSetSpecimen>).Evolve()),
+                            new Menu("Evolve",s=>
+                            {
+                                Trial<RuleSetSpecimen> trial = s["Trial"] as Trial<RuleSetSpecimen>;
+
+                                trial.Evolve(Menu.PromptFor<Int32>("How many generations?"));
+                            }),
                             new Menu("Load Best",null,new List<Menu>{
                                 new Menu ("Best Living",todo),
                                 new Menu("Best Ever",todo)

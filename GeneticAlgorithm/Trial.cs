@@ -19,6 +19,9 @@ namespace GeneticAlgorithm
 
         public Trial(string name,IStringer<TSpecimen> stringer)
         {
+            if(!Directory.Exists(name))
+                throw new FileNotFoundException(name+" is not a valid trial name.");
+
             Name = name;
 
             TrialConfig = new TrialConfiguration<TSpecimen>();
@@ -52,13 +55,16 @@ namespace GeneticAlgorithm
             SaveState();
         }
 
-        public void Evolve()
+        public void Evolve(int generations = 1)
         {
-            Population.Evolve();
+            for (int g = 0; g < generations; g++)
+            {
+                Population.Evolve();
 
-            GenerationBests.Add(Population.GetBest());
-            GenerationScores.Add(Population.GetScore());
-            Generation++;
+                GenerationBests.Add(Population.GetBest());
+                GenerationScores.Add(Population.GetScore());
+                Generation++;
+            }
 
             SaveState();
         }
@@ -88,12 +94,12 @@ namespace GeneticAlgorithm
 
         private void SaveScore()
         {
-            File.AppendAllText(FilePath("Scores"), GenerationScore.Stringer.ValueToString(GenerationScores[Generation]));
+            File.WriteAllLines(FilePath("Scores"), GenerationScores.Select(GenerationScore.Stringer.ValueToString));
         }
 
         private void SaveBest()
         {
-            File.AppendAllText(FilePath("Bests"), TrialConfig.Stringer.ValueToString(GenerationBests[Generation]));
+            File.WriteAllLines(FilePath("Bests"), GenerationBests.Select(TrialConfig.Stringer.ValueToString));
         }
 
         private string FilePath(string name)

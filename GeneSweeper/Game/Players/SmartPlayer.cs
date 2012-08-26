@@ -24,6 +24,7 @@ namespace GeneSweeper.Game.Players
         public override void Play()
         {
             //TODO Implement
+            return;
             while (true)
             {
                 _grid.Apply(_ruleSet);

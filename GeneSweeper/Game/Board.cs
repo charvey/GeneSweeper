@@ -58,7 +58,7 @@ namespace GeneSweeper.Game
                 Mines = mines;
             }
 
-            public static readonly Difficulty Small = new Difficulty(8, 8, 8);
+            //public static readonly Difficulty Small = new Difficulty(8, 8, 8);
             public static readonly Difficulty Beginner = new Difficulty(9, 9, 10);
             public static readonly Difficulty Intermediate = new Difficulty(16, 16, 40);
             public static readonly Difficulty Advanced = new Difficulty(16, 30, 99);

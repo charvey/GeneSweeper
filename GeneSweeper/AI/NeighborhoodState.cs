@@ -1,4 +1,6 @@
-﻿namespace GeneSweeper.AI
+﻿using GeneticAlgorithm;
+
+namespace GeneSweeper.AI
 {
     public struct NeighborhoodState
     {
@@ -49,6 +51,18 @@
                 min = x;
 
             Value = min;
+        }
+
+        public static NeighborhoodState GetRandom()
+        {
+            byte[] bytes = Random.NextBytes(9);
+
+            return new NeighborhoodState((byte) (bytes[0]%CellState.StateCount), (byte) (bytes[1]%CellState.StateCount),
+                                         (byte) (bytes[2]%CellState.StateCount), (byte) (bytes[3]%CellState.StateCount),
+                                         (byte) (bytes[4]%CellState.StateCount), (byte) (bytes[5]%CellState.StateCount),
+                                         (byte) (bytes[6]%CellState.StateCount), (byte) (bytes[7]%CellState.StateCount),
+                                         (byte) (bytes[8]%CellState.StateCount));
+            ;
         }
     }
 }

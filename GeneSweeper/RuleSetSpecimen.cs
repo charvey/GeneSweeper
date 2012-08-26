@@ -50,12 +50,11 @@ namespace GeneSweeper
             if(_fitness.HasValue)
                 return _fitness.Value;
 
-            //TODO Implement fitness
             _fitness = 0;
 
             foreach(var i in Enumerable.Range(0,1000))
             {
-                Board board = new AutoBoard(Board.Difficulty.Small);
+                Board board = new AutoBoard(Board.Difficulty.Beginner);
                 Player player = new SmartPlayer(RuleSet, board);
                 player.Play();
 
@@ -91,21 +90,58 @@ namespace GeneSweeper
                 _fitness += f;
             }
 
-            _fitness = Random.NextUlong();
-
             return _fitness.Value;
         }
 
         public void Mutate()
         {
-            //TODO Implement mutate
+            int count = RuleSet.Rules.Count;
+
+            byte[] bytes = Random.NextBytes(count/(8*10));
+
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                byte b = bytes[i];
+                for (int j = 0; j < 8; j++)
+                {
+                    if ((b & 1) == 1)
+                    {
+                        RuleSet.Add(Rule.GetRandom());
+                    }
+                    else
+                    {
+                        RuleSet.Remove(RuleSet.Rules.Keys.ElementAt((int) Random.NextDouble()*RuleSet.Rules.Count));
+                    }
+
+                    b >>= 1;
+                }
+            }
+
             _fitness = null;
         }
 
         public ISpecimen Crossover(ISpecimen other)
         {
-            //TODO Implement crossover
-            return null;
+            RuleSetSpecimen casted = other as RuleSetSpecimen;
+            RuleSet offspring = new RuleSet();
+
+            var keys = this.RuleSet.Rules.Keys.Union(casted.RuleSet.Rules.Keys);
+
+            foreach (var key in keys)
+            {
+                RuleSet parent;
+
+                if(Random.NextDouble()>.5)
+                    parent = this.RuleSet;
+                else
+                    parent = casted.RuleSet;
+
+                CellState result;
+                if (parent.Rules.TryGetValue(key, out result))
+                    offspring.Add(new Rule(key, result));
+            }
+            
+            return new RuleSetSpecimen(offspring);
         }
 
         public RuleSet Value()
