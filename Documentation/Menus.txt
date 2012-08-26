@@ -16,4 +16,3 @@ AI Tools
 			Manual
 	New Trial
 	Load Trial
-	Close Trial

@@ -1,16 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace GeneticAlgorithm
 {
     public class Population<TSpecimen> where TSpecimen:ISpecimen,new()
     {
+        #region Data Fields
+
         private TSpecimen[] _population;
         private readonly TrialConfiguration<TSpecimen> _configuration;
 
+        #endregion
+
+        #region ComputedFields
+
         private ulong[] CumulativeFitness;
         private ulong TotalFitness;
+
+        #endregion
+
+        #region Constructors
 
         public Population(TrialConfiguration<TSpecimen> trialConfiguration)
         {
@@ -27,6 +36,8 @@ namespace GeneticAlgorithm
 
             Order();
         }
+
+        #endregion
 
         #region Public Accessors
 

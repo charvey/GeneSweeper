@@ -48,7 +48,7 @@ namespace GeneSweeper
 
             //TODO Implement fitness
 
-            _fitness = 0;
+            _fitness = Random.NextUlong();
 
             return _fitness.Value;
         }

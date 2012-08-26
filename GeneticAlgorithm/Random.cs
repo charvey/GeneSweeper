@@ -2,8 +2,12 @@
 {
     public static class Random
     {
+        #region Fields
+
         private static System.Random _rand;
         private static System.Random Rand {get { return _rand ?? (_rand = new System.Random()); }}
+
+        #endregion
 
         #region Bytes
 
