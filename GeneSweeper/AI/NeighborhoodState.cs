@@ -1,8 +1,4 @@
-﻿using System;
-using System.Linq;
-using Random = GeneticAlgorithm.Random;
-
-namespace GeneSweeper.AI
+﻿namespace GeneSweeper.AI
 {
     public struct NeighborhoodState
     {
@@ -53,16 +49,6 @@ namespace GeneSweeper.AI
                 min = x;
 
             Value = min;
-        }
-
-        public static NeighborhoodState GetRandom()
-        {
-            return new NeighborhoodState(
-                Random.NextByte(CellState.StateCount), Random.NextByte(CellState.StateCount),
-                Random.NextByte(CellState.StateCount), Random.NextByte(CellState.StateCount),
-                Random.NextByte(CellState.StateCount), Random.NextByte(CellState.StateCount),
-                Random.NextByte(CellState.StateCount), Random.NextByte(CellState.StateCount),
-                Random.NextByte(CellState.StateCount));
         }
     }
 }

@@ -27,8 +27,7 @@ namespace GeneSweeper.Game.Boards
             CurrentState = State.Playing;
             CurrentDifficulty = difficulty;
 
-            for(int m=0;m<CurrentDifficulty.Mines;m++)
-                AddRandomMine();
+            AddRandomMines(CurrentDifficulty.Mines);
         }
 
         #endregion
@@ -57,23 +56,24 @@ namespace GeneSweeper.Game.Boards
 
         #region Private Methods
 
-        private void AddRandomMine()
+        private void AddRandomMines(int count =1)
         {
-            while (true)
+            while (count>0)
             {  
-                int c = Random.NextInt(CurrentDifficulty.Width);
-                int r = Random.NextInt(CurrentDifficulty.Height);
+                byte[] b = Random.NextBytes(2);
+                byte c = (byte) (b[0]%CurrentDifficulty.Width),
+                     r = (byte) (b[1]%CurrentDifficulty.Height);
 
                 if (!_board[r, c].Mine)
                 {
                     _board[r, c].Mine = true;
 
-                    foreach (var nCell in NeighboringPositions((byte)r, (byte)c))
+                    foreach (var nCell in NeighboringPositions(r, c))
                     {
                         _board[nCell.Row, nCell.Column].Neighbors++;
                     }
 
-                    return;
+                    count--;
                 }
             }
         }

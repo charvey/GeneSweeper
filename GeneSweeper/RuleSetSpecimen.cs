@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using GeneSweeper.AI;
 using GeneSweeper.Game;
+using GeneSweeper.Game.Boards;
 using GeneSweeper.Game.Players;
 using GeneticAlgorithm;
 using Random = GeneticAlgorithm.Random;
@@ -32,7 +34,9 @@ namespace GeneSweeper
                                     (byte) (buffer[10*i + 7] & 63),
                                     (byte) (buffer[10*i + 8] & 63)
                                     ),
-                                new CellState((byte)(buffer[10 * i + 9] & 63))));
+                                new CellState(
+                                    (byte) (buffer[10*i + 9] & 63)
+                                    )));
         }
 
         public RuleSetSpecimen(RuleSet ruleSet)
@@ -47,6 +51,45 @@ namespace GeneSweeper
                 return _fitness.Value;
 
             //TODO Implement fitness
+            _fitness = 0;
+
+            foreach(var i in Enumerable.Range(0,1000))
+            {
+                Board board = new AutoBoard(Board.Difficulty.Small);
+                Player player = new SmartPlayer(RuleSet, board);
+                player.Play();
+
+                ulong f = (board.CurrentState == Board.State.Won)
+                              ? 3u
+                              : (board.CurrentState == Board.State.Lost) ? 0u : 2u;
+                f = f << 32;
+
+                ushort mines=0;
+                ushort positions = 0;
+
+                for (byte r = 0; r < board.CurrentDifficulty.Height; r++)
+                {
+                    for (byte c = 0; c < board.CurrentDifficulty.Width; c++)
+                    {
+                        Board.Position p = new Board.Position(r, c);
+                        Board.Square s = board[p];
+
+                        if (s.Mine && !s.Revealed)
+                        {
+                            mines++;
+                            positions++;
+                        }
+                        if (s.Revealed && !s.Mine)
+                        {
+                            positions++;
+                        }
+                    }
+                }
+
+                f = f | ((ulong)mines << 16) | positions;
+
+                _fitness += f;
+            }
 
             _fitness = Random.NextUlong();
 
