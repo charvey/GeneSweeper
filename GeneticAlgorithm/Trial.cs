@@ -57,8 +57,10 @@ namespace GeneticAlgorithm
 
         public void Evolve(int generations = 1)
         {
-            for (int g = 0; g < generations; g++)
+            for (; generations>0; generations--)
             {
+                Console.WriteLine(generations+" generations remaining.");
+
                 Population.Evolve();
 
                 GenerationBests.Add(Population.GetBest());

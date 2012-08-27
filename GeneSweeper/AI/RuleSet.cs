@@ -22,8 +22,10 @@ namespace GeneSweeper.AI
 
         public CellState? Get(NeighborhoodState pattern)
         {
-            if (Rules.ContainsKey(pattern))
-                return Rules[pattern];
+            CellState result;
+
+            if (Rules.TryGetValue(pattern, out result))
+                return result;
 
             return null;
         }

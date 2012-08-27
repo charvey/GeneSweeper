@@ -3,6 +3,7 @@ using GeneSweeper.Game;
 using GeneSweeper.Game.Players;
 using System.Collections.Generic;
 using GeneticAlgorithm;
+using Random = GeneticAlgorithm.Random;
 
 namespace GeneSweeper
 {
@@ -36,13 +37,25 @@ namespace GeneSweeper
                         new Menu("View Trial",null,new List<Menu>{
                             new Menu("Display Stats",s=>
                             {
-                                Trial<RuleSetSpecimen> trial = s["Trial"] as Trial<RuleSetSpecimen>;
+                                var trial = s["Trial"] as Trial<RuleSetSpecimen>;
+
+                                if(trial==null)
+                                {
+                                    Console.WriteLine("Trial must not be null");
+                                    return;
+                                }
 
                                 Console.WriteLine("Generation: " + trial.Generation);
                             }),
                             new Menu("Evolve",s=>
                             {
-                                Trial<RuleSetSpecimen> trial = s["Trial"] as Trial<RuleSetSpecimen>;
+                                var trial = s["Trial"] as Trial<RuleSetSpecimen>;
+
+                                if (trial == null)
+                                {
+                                    Console.WriteLine("Trial must not be null");
+                                    return;
+                                }
 
                                 trial.Evolve(Menu.PromptFor<Int32>("How many generations?"));
                             }),

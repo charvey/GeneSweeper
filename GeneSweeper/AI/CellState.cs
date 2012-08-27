@@ -22,7 +22,7 @@ namespace GeneSweeper.AI
         public static CellState Adj8 = new CellState(08);
         public static CellState Edge = new CellState(09);
         public static CellState Flag = new CellState(10);
-        public static CellState Safe = new CellState(11);
+        public static CellState Reveal = new CellState(11);
 
         public const byte StateCount = 64; //2^6
 

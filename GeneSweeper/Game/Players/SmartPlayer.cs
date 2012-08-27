@@ -7,27 +7,43 @@ namespace GeneSweeper.Game.Players
     {
         private Grid _grid;
         private RuleSet _ruleSet;
-        public ushort Iterations { get; private set; }
-
-        public SmartPlayer(RuleSet ruleSet, Board.Difficulty difficulty)
-            : this(ruleSet, new AutoBoard(difficulty))
-        {
-        }
-
+        
         public SmartPlayer(RuleSet ruleSet, Board board)
             : base(board)
         {
             _ruleSet = ruleSet;
-            Iterations = 0;
+            _grid = new Grid(board.CurrentDifficulty.Height, board.CurrentDifficulty.Width);
         }
 
         public override void Play()
         {
-            //TODO Implement
-            return;
-            while (true)
+            int countSinceReveal = 0;
+            while (Board.CurrentState==Board.State.Playing)
             {
-                _grid.Apply(_ruleSet);
+                bool halt = _grid.Apply(_ruleSet);
+
+                if (halt || countSinceReveal > 1000000)
+                    return;
+
+                for(byte r=1;r<=Board.CurrentDifficulty.Height;r++)
+                {
+                    for(byte c=1;c<=Board.CurrentDifficulty.Width;c++)
+                    {
+                        if(_grid.GetCellState(r,c).Value==CellState.Reveal.Value)
+                        {
+                            countSinceReveal = 0;
+
+                            var updates = Board.Reveal(new Board.Position((byte) (r - 1), (byte) (c - 1)));
+
+                            foreach (var update in updates)
+                            {
+                                _grid.SetCellState(update.Row, update.Column, new CellState(Board[update].Neighbors));
+                            }
+                        }
+                    }
+                }
+
+                countSinceReveal++;
             }
         }
 

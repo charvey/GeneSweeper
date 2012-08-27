@@ -80,10 +80,12 @@ namespace GeneSweeper.Game.Boards
 
         private ISet<Position> Reveal(byte r, byte c)
         {
+            /*
             if (_board[r, c].Revealed)
                 throw new ArgumentException("This position has already been revealed.");
             if (_board[r, c].Flagged)
                 throw new ArgumentException("This position has already been flagged.");
+            */
 
             ISet<Position> revealed = new HashSet<Position> { new Position(r, c) };
             

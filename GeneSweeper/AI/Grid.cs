@@ -13,8 +13,6 @@ namespace GeneSweeper.AI
 
         public Grid(byte rows, byte cols)
         {
-            Debug.Assert(rows > 0 && cols > 0);
-
             _rows = rows;
             _cols = cols;
 
@@ -44,22 +42,27 @@ namespace GeneSweeper.AI
 
         public CellState GetCellState(byte row, byte col)
         {
-            Debug.Assert(row > 0 && col > 0);
-
             return _grid[row, col];
+        }
+
+        public void SetCellState(byte row, byte col,CellState value)
+        {
+            _grid[row, col] = value;
         }
 
         public NeighborhoodState GetNeighborhoodState(byte row, byte col)
         {
-            Debug.Assert(row > 0 && col > 0);
+            int r = row, c = col;
 
-            ulong value = 0;
-
-            for (int r = row - 1; r <= row + 1; r++)
-                for (int c = col - 1; c <= col + 1; c++)
-                    value = (value << 6) | ((ulong)_grid[r, c].Value);
-
-            return new NeighborhoodState(value);
+            return new NeighborhoodState(_grid[r - 1, c - 1].Value,
+                                         _grid[r - 1, c].Value,
+                                         _grid[r - 1, c + 1].Value,
+                                         _grid[r, c - 1].Value,
+                                         _grid[r, c].Value,
+                                         _grid[r, c + 1].Value,
+                                         _grid[r + 1, c - 1].Value,
+                                         _grid[r + 1, c].Value,
+                                         _grid[r + 1, c + 1].Value);
         }
 
         #endregion

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace GeneticAlgorithm
 {
@@ -12,7 +14,7 @@ namespace GeneticAlgorithm
 
         #endregion
 
-        #region ComputedFields
+        #region Computed Fields
 
         private ulong[] CumulativeFitness;
         private ulong TotalFitness;
@@ -72,10 +74,6 @@ namespace GeneticAlgorithm
 
         #region Public Methods
 
-        /// <summary>
-        /// It is assumed that the population is ordered before and after this method runs.
-        /// </summary>
-        /// <param name="configuration"></param>
         public void Evolve()
         {
             Crossover();
@@ -91,7 +89,7 @@ namespace GeneticAlgorithm
         {
             _population = new TSpecimen[_configuration.PopulationSize];
 
-            foreach (var i in Enumerable.Range(0,_configuration.PopulationSize).AsParallel())
+            foreach (var i in Enumerable.Range(0,_configuration.PopulationSize))
             {
                 _population[i] = new TSpecimen();
             }
@@ -136,7 +134,13 @@ namespace GeneticAlgorithm
 
         private void Order()
         {
-            _population = _population.OrderBy(s => s.Fitness()).ToArray();
+            int processorCount = Environment.ProcessorCount*8;
+
+            var partitions = Enumerable.Range(0, processorCount).Select(p => _population.Where((s, i) => i%processorCount == p));
+
+            Parallel.ForEach(partitions, p => p.Select(s => s.Fitness()));
+
+            _population = _population.OrderByDescending(s => s.Fitness()).ToArray();
 
             CumulativeFitness=new ulong[_population.Length];
             TotalFitness = 0;
