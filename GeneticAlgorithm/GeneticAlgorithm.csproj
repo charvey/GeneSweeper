@@ -5,8 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>02370735-ef74-4e59-bd69-48acb3124551</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{9E4A1E31-A25A-43D0-8C21-B16656235A62}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GeneticAlgorithm</RootNamespace>
     <AssemblyName>GeneticAlgorithm</AssemblyName>
@@ -33,6 +33,18 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="GenerationScore.cs" />
+    <Compile Include="ISpecimen.cs" />
+    <Compile Include="IStringer.cs" />
+    <Compile Include="Population.cs" />
+    <Compile Include="Random.cs" />
+    <Compile Include="Trial.cs" />
+    <Compile Include="TrialConfiguration.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
