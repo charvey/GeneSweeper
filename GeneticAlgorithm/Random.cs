@@ -34,7 +34,10 @@
 
         #region Bools
 
-        public static int deficit = 0;
+        public static bool NextBool()
+        {
+            return Random.NextDouble() > .5;
+        }
 
         public static bool[] NextBools(int count)
         {
@@ -43,7 +46,6 @@
             for (int i = 0; i < count; i++)
             {
                 bools[i] = Random.NextDouble() > .5;
-                deficit += bools[i] ? 1 : -1;
             }
 
             return bools;

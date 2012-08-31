@@ -134,11 +134,11 @@ namespace GeneticAlgorithm
 
         private void Order()
         {
-            int processorCount = Environment.ProcessorCount*8;
+            //int processorCount = Environment.ProcessorCount*8;
 
-            var partitions = Enumerable.Range(0, processorCount).Select(p => _population.Where((s, i) => i%processorCount == p));
+            //var partitions = Enumerable.Range(0, processorCount).Select(p => _population.Where((s, i) => i%processorCount == p));
 
-            Parallel.ForEach(partitions, p => p.Select(s => s.Fitness()));
+            //Parallel.ForEach(partitions, p => p.Select(s => s.Fitness()));
 
             _population = _population.OrderByDescending(s => s.Fitness()).ToArray();
 

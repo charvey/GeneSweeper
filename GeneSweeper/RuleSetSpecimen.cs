@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using GeneSweeper.AI;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Boards;
 using GeneSweeper.Game.Players;
+using GeneSweeper.Util;
 using GeneticAlgorithm;
 using Random = GeneticAlgorithm.Random;
 
@@ -139,30 +141,72 @@ namespace GeneSweeper
             RuleSetSpecimen casted = other as RuleSetSpecimen;
 
             int before = (casted.RuleSet.Rules.Count + this.RuleSet.Rules.Count)/2;
+            
+            var offspringRules = new Dictionary<NeighborhoodState, CellState>();
 
-            RuleSet offspring = new RuleSet();
+            var keys = this.RuleSet.Rules.Keys.Union(casted.RuleSet.Rules.Keys).ToList();
 
-            var keys = this.RuleSet.Rules.Keys.Union(casted.RuleSet.Rules.Keys);
-
-            foreach (var key in keys)
+            for (int i = 0; i < before; i++)
             {
-                RuleSet parent;
+                var key = keys.RandomElement(true);
+                CellState val1, val2;
 
-                if (Random.NextDouble() > .5)
-                    parent = this.RuleSet;
+                if (this.RuleSet.Rules.TryGetValue(key, out val1))
+                {
+                    if (casted.RuleSet.Rules.TryGetValue(key, out val2))
+                    {
+                        offspringRules.Add(key, (Random.NextBool() ? this : casted).RuleSet.Rules[key]);
+                    }
+                    else
+                    {
+                        offspringRules.Add(key, val1);
+                    }
+                }
                 else
-                    parent = casted.RuleSet;
-
-                CellState result;
-                if (parent.Rules.TryGetValue(key, out result))
-                    offspring.Add(new Rule(key, result));
+                {
+                    offspringRules.Add(key, casted.RuleSet.Rules[key]);
+                }
             }
 
-            cDiff += (offspring.Rules.Count - before);
-            Console.WriteLine("C\tB: " + before + "\tA: " + offspring.Rules.Count + "\tD: " +
-                              (offspring.Rules.Count - before) + "\tT:" + cDiff);
+            /*
+                foreach (var key in this.RuleSet.Rules.Keys.Except(casted.RuleSet.Rules.Keys))
+                {
+                    offspringRules.Add(key, this.RuleSet.Rules[key]);
+                }
 
-            return new RuleSetSpecimen(offspring);
+                foreach (var key in casted.RuleSet.Rules.Keys.Except(this.RuleSet.Rules.Keys))
+                {
+                    offspringRules.Add(key, casted.RuleSet.Rules[key]);
+                }
+
+                foreach (var key in this.RuleSet.Rules.Keys.Intersect(casted.RuleSet.Rules.Keys))
+                {
+                    offspringRules.Add(key, (Random.NextBool() ? this : casted).RuleSet.Rules[key]);
+                }
+
+                while(offspringRules.Count>before)
+                {
+                    offspringRules.Remove(offspringRules.Keys.ElementAt((int) (Random.NextDouble()*offspringRules.Count)));
+                }
+                */
+
+                /*
+                foreach (var key in keys)
+                {
+                    RuleSet parent;
+
+                    if (Random.NextDouble() > .5)
+                        parent = this.RuleSet;
+                    else
+                        parent = casted.RuleSet;
+
+                    CellState result;
+                    if (parent.Rules.TryGetValue(key, out result))
+                        offspring.Add(new Rule(key, result));
+                }
+                */
+
+                return new RuleSetSpecimen(new RuleSet(offspringRules));
         }
 
         public RuleSet Value()

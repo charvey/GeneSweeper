@@ -15,6 +15,11 @@ namespace GeneSweeper.AI
             Rules = new Dictionary<NeighborhoodState, CellState>();
         }
 
+        public RuleSet(Dictionary<NeighborhoodState, CellState> rules)
+        {
+            Rules = rules;
+        }
+
         public void Add(Rule rule)
         {
             Rules[rule.Pattern] = rule.Result;

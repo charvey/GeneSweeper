@@ -1,4 +1,6 @@
-﻿using GeneSweeper.AI;
+﻿using System.Collections.Generic;
+using GeneSweeper.AI;
+using GeneticAlgorithm;
 
 namespace GeneSweeper.Util
 {
@@ -24,6 +26,17 @@ namespace GeneSweeper.Util
                 i++;
             }
             return new string(b);
+        }
+
+        public static T RandomElement<T>(this List<T> list, bool remove=false)
+        {
+            int index = (int) Random.NextDouble()*list.Count;
+            T element = list[index];
+
+            if(remove)
+                list.RemoveAt(index);
+
+            return element;
         }
     }
 }
