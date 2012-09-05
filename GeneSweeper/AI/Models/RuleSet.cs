@@ -4,7 +4,7 @@ using GeneSweeper.Util;
 using System;
 using GeneticAlgorithm;
 
-namespace GeneSweeper.AI
+namespace GeneSweeper.AI.Models
 {
     public class RuleSet
     {

@@ -8,6 +8,8 @@ namespace GeneticAlgorithm
 {
     public class Trial<TSpecimen> where TSpecimen:ISpecimen,new()
     {
+        #region Fields
+
         public Population<TSpecimen> Population { get; private set; }
         public List<TSpecimen> GenerationBests { get; private set; }
         public List<GenerationScore> GenerationScores { get; private set; }
@@ -16,6 +18,10 @@ namespace GeneticAlgorithm
         public readonly TrialConfiguration<TSpecimen> TrialConfig;
 
         public readonly string Name;
+
+        #endregion
+
+        #region Contructors
 
         public Trial(string name,IStringer<TSpecimen> stringer)
         {
@@ -55,6 +61,24 @@ namespace GeneticAlgorithm
             SaveState();
         }
 
+        #endregion
+
+        #region Public Accessors
+
+        public TSpecimen GetBestLiving()
+        {
+            return Population.GetBest();
+        }
+
+        public TSpecimen GetBestEver()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
+
+        #region Public Methods
+
         public void Evolve(int generations = 1)
         {
             for (; generations>0; generations--)
@@ -70,6 +94,8 @@ namespace GeneticAlgorithm
 
             SaveState();
         }
+
+        #endregion
 
         #region State Savers
 

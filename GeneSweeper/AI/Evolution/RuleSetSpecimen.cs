@@ -10,8 +10,10 @@ using GeneSweeper.Game.Players;
 using GeneSweeper.Util;
 using GeneticAlgorithm;
 using Random = GeneticAlgorithm.Random;
+using GeneSweeper.AI.Evolution.CrossoverStrategies;
+using GeneSweeper.AI.Models;
 
-namespace GeneSweeper
+namespace GeneSweeper.AI.Evolution
 {
     public class RuleSetSpecimen : ISpecimen
     {
@@ -135,78 +137,11 @@ namespace GeneSweeper
             _fitness = null;
         }
 
+        private static ICrossoverStrategy CrossoverStrategy = new Strategy4();
         public static int cDiff=0;
         public ISpecimen Crossover(ISpecimen other)
         {
-            RuleSetSpecimen casted = other as RuleSetSpecimen;
-
-            int before = (casted.RuleSet.Rules.Count + this.RuleSet.Rules.Count)/2;
-            
-            var offspringRules = new Dictionary<NeighborhoodState, CellState>();
-
-            var keys = this.RuleSet.Rules.Keys.Union(casted.RuleSet.Rules.Keys).ToList();
-
-            for (int i = 0; i < before; i++)
-            {
-                var key = keys.RandomElement(true);
-                CellState val1, val2;
-
-                if (this.RuleSet.Rules.TryGetValue(key, out val1))
-                {
-                    if (casted.RuleSet.Rules.TryGetValue(key, out val2))
-                    {
-                        offspringRules.Add(key, (Random.NextBool() ? this : casted).RuleSet.Rules[key]);
-                    }
-                    else
-                    {
-                        offspringRules.Add(key, val1);
-                    }
-                }
-                else
-                {
-                    offspringRules.Add(key, casted.RuleSet.Rules[key]);
-                }
-            }
-
-            /*
-                foreach (var key in this.RuleSet.Rules.Keys.Except(casted.RuleSet.Rules.Keys))
-                {
-                    offspringRules.Add(key, this.RuleSet.Rules[key]);
-                }
-
-                foreach (var key in casted.RuleSet.Rules.Keys.Except(this.RuleSet.Rules.Keys))
-                {
-                    offspringRules.Add(key, casted.RuleSet.Rules[key]);
-                }
-
-                foreach (var key in this.RuleSet.Rules.Keys.Intersect(casted.RuleSet.Rules.Keys))
-                {
-                    offspringRules.Add(key, (Random.NextBool() ? this : casted).RuleSet.Rules[key]);
-                }
-
-                while(offspringRules.Count>before)
-                {
-                    offspringRules.Remove(offspringRules.Keys.ElementAt((int) (Random.NextDouble()*offspringRules.Count)));
-                }
-                */
-
-                /*
-                foreach (var key in keys)
-                {
-                    RuleSet parent;
-
-                    if (Random.NextDouble() > .5)
-                        parent = this.RuleSet;
-                    else
-                        parent = casted.RuleSet;
-
-                    CellState result;
-                    if (parent.Rules.TryGetValue(key, out result))
-                        offspring.Add(new Rule(key, result));
-                }
-                */
-
-                return new RuleSetSpecimen(new RuleSet(offspringRules));
+            return CrossoverStrategy.Crossover((RuleSetSpecimen)this, (RuleSetSpecimen)other);
         }
 
         public RuleSet Value()

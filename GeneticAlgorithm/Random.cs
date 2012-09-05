@@ -71,7 +71,34 @@
 
         public static ulong NextUlong()
         {
-            return (((ulong)Rand.Next()) << 32) | ((ulong)Rand.Next());
+            byte[] bytes = new byte[8];
+            Rand.NextBytes(bytes);
+
+            ulong next = 0;
+            next = next | bytes[0];
+
+            next <<= 8;
+            next = next | bytes[1];
+
+            next <<= 8;
+            next = next | bytes[2];
+
+            next <<= 8;
+            next = next | bytes[3];
+
+            next <<= 8;
+            next = next | bytes[4];
+
+            next <<= 8;
+            next = next | bytes[5];
+
+            next <<= 8;
+            next = next | bytes[6];
+
+            next <<= 8;
+            next = next | bytes[7];
+
+            return next;
         }
 
         #endregion

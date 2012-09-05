@@ -2,14 +2,17 @@
 using GeneSweeper.Game;
 using GeneSweeper.Util;
 using GeneticAlgorithm;
+using System.Linq;
 
-namespace GeneSweeper.AI
+namespace GeneSweeper.AI.Models
 {
     public class Grid
     {
         private CellState[,] _grid;
         private readonly int _rows;
         private readonly int _cols;
+
+        #region Constructor
 
         public Grid(byte rows, byte cols)
         {
@@ -33,10 +36,12 @@ namespace GeneSweeper.AI
             {
                 for (int c = 1; c <= _cols; c++)
                 {
-                    _grid[r, c] = new CellState((byte) Random.NextInt(0, 9));
+                    _grid[r, c] = CellState.Initial;
                 }
             }
         }
+
+        #endregion
 
         #region Accessors
 
@@ -113,12 +118,20 @@ namespace GeneSweeper.AI
         public override string ToString()
         {
             string str = "";
-            //string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz+/";
-            //string chars = "012345678█M?▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒";
-            string chars = "012345678█Mabcde";
+            //string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+            string chars = "012345678█!?ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+            //string chars = "012345678█!?▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒";
+
+            str += "    " + Enumerable.Range(0, _cols).Select(c => c / 10).Aggregate("", (s, c) => s + c) + '\n';
+            str += "    " + Enumerable.Range(0, _cols).Select(c => c % 10).Aggregate("", (s, c) => s + c) + '\n';
 
             for (int r = 0; r <= _rows + 1; r++)
             {
+                if (r > 0 && r <= _rows)
+                    str += (r - 1).ToString("00");
+                else
+                    str += "  ";
+
                 for (int c = 0; c <= _cols + 1; c++)
                 {
                     str += chars[_grid[r, c].Value];

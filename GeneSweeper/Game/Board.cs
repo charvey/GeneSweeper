@@ -40,7 +40,7 @@ namespace GeneSweeper.Game
             }
         }
 
-        public struct Difficulty
+        public class Difficulty
         {
             public byte Height;
             public byte Width;

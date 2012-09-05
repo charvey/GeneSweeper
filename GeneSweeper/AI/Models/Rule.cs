@@ -1,5 +1,5 @@
 ﻿
-namespace GeneSweeper.AI
+namespace GeneSweeper.AI.Models
 {
     public struct Rule
     {

@@ -1,6 +1,6 @@
 ﻿using GeneticAlgorithm;
 
-namespace GeneSweeper.AI
+namespace GeneSweeper.AI.Models
 {
     public struct NeighborhoodState
     {

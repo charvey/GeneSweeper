@@ -52,20 +52,25 @@
     <StartupObject>GeneSweeper.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AI\CellState.cs" />
-    <Compile Include="AI\Grid.cs" />
-    <Compile Include="AI\NeighborhoodState.cs" />
-    <Compile Include="AI\Rule.cs" />
-    <Compile Include="AI\RuleSet.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\ICrossoverStrategy.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\Strategy1.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\Strategy2.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\Strategy3.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\Strategy4.cs" />
+    <Compile Include="AI\Models\CellState.cs" />
+    <Compile Include="AI\Models\Grid.cs" />
+    <Compile Include="AI\Models\NeighborhoodState.cs" />
+    <Compile Include="AI\Models\Rule.cs" />
+    <Compile Include="AI\Models\RuleSet.cs" />
     <Compile Include="Game\Board.cs" />
     <Compile Include="Game\Boards\AutoBoard.cs" />
     <Compile Include="Game\Boards\ManualBoard.cs" />
     <Compile Include="Game\Player.cs" />
     <Compile Include="Game\Players\HumanPlayer.cs" />
     <Compile Include="Game\Players\SmartPlayer.cs" />
-    <Compile Include="Menu.cs" />
+    <Compile Include="Util\Menu.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="RuleSetSpecimen.cs" />
+    <Compile Include="AI\Evolution\RuleSetSpecimen.cs" />
     <Compile Include="Util\Extensions.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +103,9 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

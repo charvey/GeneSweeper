@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GeneSweeper
+namespace GeneSweeper.Util
 {
     public class Menu
     {
@@ -85,6 +85,26 @@ namespace GeneSweeper
                     Console.WriteLine("Input must be of type: " + typeof (T).Name);
                 }
             }
+        }
+
+        public static bool Load<T>(Dictionary<string, object> state, String name, out T variable) where T:class
+        {
+            if (!state.ContainsKey(name))
+            {
+                Console.WriteLine(name + " must be loaded before using");
+                variable = null;
+                return false;
+            }
+
+            variable = state[name] as T;
+
+            if (variable == null)
+            {
+                Console.WriteLine(name+" is not of type "+typeof(T));
+                return false;
+            }
+
+            return true;
         }
     }
 }
