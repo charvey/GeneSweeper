@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GeneSweeper.AI.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,13 +13,38 @@ namespace GeneSweeper.AI.Evolution.CrossoverStrategies
         {
             int size = (p1.RuleSet.Rules.Count + p2.RuleSet.Rules.Count) / 2;
 
-            int split = (int) Random.NextDouble() * size;
+            int p1Segment, p2Segment, offset, remaining;
 
-            int p1Offset = Random.NextInt(0, p1.RuleSet.Rules.Count - split);
+            Dictionary<NeighborhoodState,CellState> rules = new Dictionary<NeighborhoodState,CellState>();
 
-            //int p2Offset = Random.NextInt(
+            do
+            {
+                remaining = size - rules.Count;
 
-            throw new NotImplementedException();
+                p1Segment = (int)(Random.NextDouble() * remaining);
+
+                if (Random.NextBool())
+                    p1Segment = remaining - p1Segment;
+
+                p2Segment = remaining - p1Segment;                
+
+                p1Segment = Math.Min(p1Segment, p1.RuleSet.Rules.Count);
+                p2Segment = Math.Min(p2Segment, p2.RuleSet.Rules.Count);
+
+                offset = Random.NextInt(0, p1.RuleSet.Rules.Count - p1Segment);
+                foreach (var rule in p1.RuleSet.Rules.Skip(offset).Take(p1Segment))
+                {
+                    rules[rule.Key] = rule.Value;
+                }
+
+                offset = Random.NextInt(0, p2.RuleSet.Rules.Count - p2Segment);
+                foreach (var rule in p2.RuleSet.Rules.Skip(offset).Take(p2Segment))
+                {
+                    rules[rule.Key] = rule.Value;
+                }                
+            } while (rules.Count < size);
+
+            return new RuleSetSpecimen(new RuleSet(rules));
         }
     }
 }

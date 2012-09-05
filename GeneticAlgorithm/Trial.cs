@@ -71,8 +71,19 @@ namespace GeneticAlgorithm
         }
 
         public TSpecimen GetBestEver()
-        {
-            throw new NotImplementedException();
+        {            
+            int bestIndex=0;
+            ulong bestScore = GenerationScores[bestIndex].BestScore;
+            for (int i = 1; i < GenerationScores.Count; i++)
+            {
+                if (GenerationScores[i].BestScore > bestScore)
+                {
+                    bestIndex = i;
+                    bestScore = GenerationScores[i].BestScore;
+                }
+            }
+
+            return GenerationBests[bestIndex];
         }
 
         #endregion

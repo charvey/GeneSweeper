@@ -1,4 +1,5 @@
-﻿using GeneticAlgorithm;
+﻿using System;
+using Random = GeneticAlgorithm.Random;
 
 namespace GeneSweeper.AI.Models
 {
@@ -8,7 +9,7 @@ namespace GeneSweeper.AI.Models
 
         public NeighborhoodState(ulong value)
         {
-            Value = value >> (4 + 6);
+            Value = value;
         }
 
         public NeighborhoodState(byte tl, byte tc, byte tr, byte ml, byte mc, byte mr,byte bl,byte bc,byte br)
@@ -50,19 +51,22 @@ namespace GeneSweeper.AI.Models
             if (x < min)
                 min = x;
 
-            Value = min;
+            Value = min << (6 + 4);
         }
 
         public static NeighborhoodState GetRandom()
         {
             byte[] bytes = Random.NextBytes(9);
 
-            return new NeighborhoodState((byte) (bytes[0]%CellState.StateCount), (byte) (bytes[1]%CellState.StateCount),
-                                         (byte) (bytes[2]%CellState.StateCount), (byte) (bytes[3]%CellState.StateCount),
-                                         (byte) (bytes[4]%CellState.StateCount), (byte) (bytes[5]%CellState.StateCount),
-                                         (byte) (bytes[6]%CellState.StateCount), (byte) (bytes[7]%CellState.StateCount),
-                                         (byte) (bytes[8]%CellState.StateCount));
-            ;
+            NeighborhoodState next = new NeighborhoodState(
+                (byte)(bytes[0] % CellState.StateCount), (byte)(bytes[1] % CellState.StateCount), (byte)(bytes[2] % CellState.StateCount),
+                (byte)(bytes[3] % CellState.StateCount), (byte)(bytes[4] % CellState.StateCount), (byte)(bytes[5] % CellState.StateCount),
+                (byte)(bytes[6] % CellState.StateCount), (byte)(bytes[7] % CellState.StateCount), (byte)(bytes[8] % CellState.StateCount));
+
+            if (2573485501887179 == next.Value)
+                Console.WriteLine("HERE IS ONE");
+
+            return next;
         }
     }
 }

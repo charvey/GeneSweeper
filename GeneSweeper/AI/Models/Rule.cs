@@ -12,11 +12,11 @@ namespace GeneSweeper.AI.Models
 
         public Rule(NeighborhoodState pattern, CellState result)
         {
-            Value = ((pattern.Value << 6) | result.Value) << 4;
+            Value = (pattern.Value << 10) | (((ulong)result.Value) & 63);
         }
 
-        public NeighborhoodState Pattern { get { return new NeighborhoodState(Value >> (4 + 6)); } }
-        public CellState Result { get { return new CellState((byte) ((Value >> 4) & 63)); } }
+        public NeighborhoodState Pattern { get { return new NeighborhoodState(Value & (ulong.MaxValue - 1023)); } }
+        public CellState Result { get { return new CellState((byte)(Value & 63)); } }
 
         public static Rule GetRandom()
         {

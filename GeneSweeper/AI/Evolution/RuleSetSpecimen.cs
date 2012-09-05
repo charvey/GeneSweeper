@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using GeneSweeper.AI;
+﻿using GeneSweeper.AI.Evolution.CrossoverStrategies;
+using GeneSweeper.AI.Models;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Boards;
 using GeneSweeper.Game.Players;
-using GeneSweeper.Util;
 using GeneticAlgorithm;
+using System;
+using System.Linq;
 using Random = GeneticAlgorithm.Random;
-using GeneSweeper.AI.Evolution.CrossoverStrategies;
-using GeneSweeper.AI.Models;
 
 namespace GeneSweeper.AI.Evolution
 {
@@ -63,7 +58,7 @@ namespace GeneSweeper.AI.Evolution
 
             _fitness = 0;
 
-            foreach (var i in Enumerable.Range(0,1000))
+            foreach (var i in Enumerable.Range(0,1024))
             {
                 _fitness += SingleFitness();
             }
@@ -131,9 +126,10 @@ namespace GeneSweeper.AI.Evolution
                 }
             }
 
-            mDiff += (RuleSet.Rules.Count - before);
-            Console.WriteLine("M\tB: " + before + "\tA: " + RuleSet.Rules.Count + "\tD: " +
-                              (RuleSet.Rules.Count - before) + "\tT:" + mDiff);
+            int after = RuleSet.Rules.Count;
+
+            mDiff += (after - before);
+            //Console.WriteLine("M\tB: " + before + "\tA: " + after + "\tD: " + (after - before) + "\tT:" + mDiff);
             _fitness = null;
         }
 
@@ -141,7 +137,16 @@ namespace GeneSweeper.AI.Evolution
         public static int cDiff=0;
         public ISpecimen Crossover(ISpecimen other)
         {
-            return CrossoverStrategy.Crossover((RuleSetSpecimen)this, (RuleSetSpecimen)other);
+            int before = (RuleSet.Rules.Count + ((RuleSetSpecimen)other).RuleSet.Rules.Count) / 2;
+
+            RuleSetSpecimen result = CrossoverStrategy.Crossover((RuleSetSpecimen)this, (RuleSetSpecimen)other);
+
+            int after = result.RuleSet.Rules.Count;
+            
+            cDiff += (after - before);
+            //Console.WriteLine("C\tB: " + before + "\tA: " + after + "\tD: " + (after - before) + "\tT:" + cDiff);
+
+            return result;
         }
 
         public RuleSet Value()

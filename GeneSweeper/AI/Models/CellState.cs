@@ -8,7 +8,7 @@ namespace GeneSweeper.AI.Models
 
         public CellState(byte value)
         {
-            Value = (byte)((value << 2) >> 2);
+            Value = (byte)(value & 63);
         }
 
         public static CellState Adj0 = new CellState(00);

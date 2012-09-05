@@ -107,13 +107,19 @@ namespace GeneticAlgorithm
             }
             for (int i = carryoverPoint; i < _configuration.PopulationSize; i++)
             {
-                ulong p1cf = (ulong) (Random.NextDouble()*TotalFitness),
-                      p2cf = (ulong) (Random.NextDouble()*TotalFitness);
+                ulong p1cf = (ulong)(Random.NextDouble() * TotalFitness),
+                    p2cf = (ulong)(Random.NextDouble() * TotalFitness);
 
                 int p1i = Enumerable.Range(0, _configuration.PopulationSize)
-                    .First(index => CumulativeFitness[index] >= p1cf),
-                    p2i = Enumerable.Range(0, _configuration.PopulationSize)
-                        .First(index => CumulativeFitness[index] >= p2cf);
+                    .First(index => CumulativeFitness[index] >= p1cf);
+                int    p2i = Enumerable.Range(0, _configuration.PopulationSize)
+                    .First(index => CumulativeFitness[index] >= p2cf);
+
+                if (p1i == p2i)
+                    if (p1i == 0)
+                        p2i++;
+                    else
+                        p1i--;
 
                 newPopulation[i] = (TSpecimen) _population[p1i].Crossover(_population[p2i]);
             }

@@ -1,15 +1,13 @@
-﻿using System;
-using GeneSweeper.Game;
-using GeneSweeper.Game.Players;
-using System.Collections.Generic;
-using GeneticAlgorithm;
-using Random = GeneticAlgorithm.Random;
-using GeneSweeper.Util;
-using GeneSweeper.AI.Evolution;
-using System.Linq;
-using GeneSweeper.AI;
-using GeneSweeper.Game.Boards;
+﻿using GeneSweeper.AI.Evolution;
 using GeneSweeper.AI.Models;
+using GeneSweeper.Game;
+using GeneSweeper.Game.Boards;
+using GeneSweeper.Game.Players;
+using GeneSweeper.Util;
+using GeneticAlgorithm;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace GeneSweeper
 {
@@ -17,7 +15,20 @@ namespace GeneSweeper
     {
         static void Main(string[] args)
         {
-            MainMenu();
+            var ns = new NeighborhoodState(
+                CellState.Edge.Value, CellState.Edge.Value, CellState.Edge.Value,
+                CellState.Edge.Value, CellState.Initial.Value, CellState.Initial.Value,
+                CellState.Edge.Value, CellState.Initial.Value, CellState.Initial.Value);
+
+            Console.WriteLine(ns.Value);
+
+            for (int i = 0; i < int.MaxValue; i++)
+            {
+                if (NeighborhoodState.GetRandom().Value == ns.Value)
+                    Console.WriteLine(i);
+            }
+            Console.ReadLine();
+            //MainMenu();
         }
 
         static void MainMenu()
@@ -49,6 +60,9 @@ namespace GeneSweeper
                                         return;
 
                                 Console.WriteLine("Generation: " + trial.Generation);
+                                Console.WriteLine("Population Size: " + trial.TrialConfig.PopulationSize);
+                                Console.WriteLine("Mutation Rate: " + trial.TrialConfig.PopulationSize);
+                                Console.WriteLine("Carryover Rate: " + trial.TrialConfig.CarryoverRate);
                             }),
                             new Menu("Evolve",s=>
                             {

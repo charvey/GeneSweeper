@@ -10,5 +10,5 @@
                                     ------                      	#06#	Neighbor 7
                                           ------                	#06#	Neighbor 8
                                                 ------          	#06#	Self
-                                                      ------    	#06#	Result
-                                                            ----	#04#	Unused
+                                                      ----      	#06#	Unused
+                                                          ------	#04#	Result
