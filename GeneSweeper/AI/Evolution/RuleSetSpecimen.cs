@@ -70,16 +70,15 @@ namespace GeneSweeper.AI.Evolution
         private ulong SingleFitness()
         {
             Board board = new AutoBoard(Board.Difficulty.Beginner);
-            Player player = new SmartPlayer(RuleSet, board);
+            SmartPlayer player = new SmartPlayer(RuleSet, board);
             player.Play();
 
             ulong f = (board.CurrentState == Board.State.Won)
-                          ? 3u
-                          : (board.CurrentState == Board.State.Lost) ? 0u : 2u;
-            f = f << 32;
-
-            ushort mines = 0;
-            ushort positions = 0;
+                          ? 255u
+                          : (board.CurrentState == Board.State.Lost) ? 0u : 63u;
+            
+            byte mines = 0;
+            byte positions = 0;
 
             for (byte r = 0; r < board.CurrentDifficulty.Height; r++)
             {
@@ -100,7 +99,10 @@ namespace GeneSweeper.AI.Evolution
                 }
             }
 
-            f = f | ((ulong)mines << 16) | positions;
+            f <<= 24;
+            f |= ((uint)(player.Reveals << 16));
+            f |= ((uint)(mines << 8));
+            f |= ((uint)(positions << 0));
 
             return f;
         }
@@ -112,7 +114,7 @@ namespace GeneSweeper.AI.Evolution
 
             int count = RuleSet.Rules.Count;
 
-            bool[] bools = Random.NextBools(count / 10);
+            bool[] bools = Random.NextBools(count);
 
             for (int i = 0; i < bools.Length; i++)
             {

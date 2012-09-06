@@ -16,7 +16,8 @@ namespace GeneSweeper.Game.Players
 
         #region Public Fields
 
-        public int StepsSinceReveal;
+        public int StepsSinceReveal { get; private set; }
+        public ushort Reveals { get; private set; }
 
         #endregion
 
@@ -30,6 +31,7 @@ namespace GeneSweeper.Game.Players
             _step = 0;
             
             StepsSinceReveal = 0;
+            Reveals = 0;
         }
 
         #endregion
@@ -58,12 +60,20 @@ namespace GeneSweeper.Game.Players
 
         public bool Step()
         {
-            bool halt = _grid.Apply(_ruleSet);
+            if (_step == 0)
+            {
+                _grid.SetCellState(
+                    (byte)((Board.CurrentDifficulty.Height + 1) / 2),
+                    (byte)((Board.CurrentDifficulty.Width + 1) / 2),
+                    CellState.Reveal);
+            }
+            else
+            {
+                if(_grid.Apply(_ruleSet))
+                    return true;
+            }
             StepsSinceReveal++;
             _step++;
-
-            if (halt)
-                return true;
 
             for (byte r = 1; r <= Board.CurrentDifficulty.Height; r++)
             {
@@ -72,12 +82,16 @@ namespace GeneSweeper.Game.Players
                     if (_grid.GetCellState(r, c).Value == CellState.Reveal.Value)
                     {
                         StepsSinceReveal = 0;
+                        Reveals++;
 
                         var updates = Board.Reveal(new Board.Position((byte)(r - 1), (byte)(c - 1)));
 
                         foreach (var update in updates)
                         {
-                            _grid.SetCellState(update.Row, update.Column, new CellState(Board[update].Neighbors));
+                            _grid.SetCellState(
+                                (byte)(update.Row + 1),
+                                (byte)(update.Column + 1),
+                                new CellState(Board[update].Neighbors));
                         }
                     }
                 }

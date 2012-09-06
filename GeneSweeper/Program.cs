@@ -81,8 +81,8 @@ namespace GeneSweeper
                                     if(!Menu.Load(s,"Best",out best))
                                         return;
 
-                                    SmartPlayer player = new SmartPlayer(best.RuleSet, new AutoBoard(Board.Difficulty.Beginner));
-
+                                    Board board = new AutoBoard(Board.Difficulty.Beginner);
+                                    SmartPlayer player = new SmartPlayer(best.RuleSet, board);
                                     player.Play();
 
                                     Console.Out.WriteLine(player);
@@ -93,7 +93,8 @@ namespace GeneSweeper
                                     if(!Menu.Load(s,"Best",out best))
                                         return;
 
-                                    SmartPlayer player = new SmartPlayer(best.RuleSet, new AutoBoard(Board.Difficulty.Beginner));
+                                    Board board = new AutoBoard(Board.Difficulty.Beginner);
+                                    SmartPlayer player = new SmartPlayer(best.RuleSet, board);
                                     bool halt;
                                     do
                                     {

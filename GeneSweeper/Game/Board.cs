@@ -12,6 +12,7 @@ namespace GeneSweeper.Game
             public byte Row;
             public byte Column;
 
+            //0..255
             public Position(byte row, byte column)
             {
                 Row = row;
