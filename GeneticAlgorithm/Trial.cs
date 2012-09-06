@@ -11,7 +11,7 @@ namespace GeneticAlgorithm
         #region Fields
 
         public Population<TSpecimen> Population { get; private set; }
-        public List<TSpecimen> GenerationBests { get; private set; }
+        public TSpecimen Best { get; private set; }
         public List<GenerationScore> GenerationScores { get; private set; }
         public int Generation { get; private set; }
 
@@ -31,17 +31,15 @@ namespace GeneticAlgorithm
             Name = name;
 
             TrialConfig = new TrialConfiguration<TSpecimen>();
-            TrialConfig = TrialConfig.ConfigStringer.StringToValue(File.ReadAllText(name + "/Config"));
+            TrialConfig = TrialConfig.ConfigStringer.StringToValue(File.ReadAllText(FilePath("Config")));
             TrialConfig.Stringer = stringer;
 
             Population = new Population<TSpecimen>(TrialConfig,
-                                                   File.ReadAllLines(name + "/CurrentPopulation")
+                                                   File.ReadAllLines(FilePath("CurrentPopulation"))
                                                        .Select(l => TrialConfig.Stringer.StringToValue(l))
                                                        .ToArray());
-            GenerationBests = File.ReadAllLines(name + "/Bests")
-                .Select(l => TrialConfig.Stringer.StringToValue(l)).ToList();
-            GenerationScores = File.ReadAllLines(name + "/Scores")
-                .Select(l => GenerationScore.Stringer.StringToValue(l)).ToList();
+            Best = TrialConfig.Stringer.StringToValue(File.ReadAllText(FilePath("Best")));
+            GenerationScores = File.ReadAllLines(FilePath("Scores")).Select(l => GenerationScore.Stringer.StringToValue(l)).ToList();
             Generation = GenerationScores.Count - 1;
         }
 
@@ -51,7 +49,7 @@ namespace GeneticAlgorithm
             TrialConfig = trialConfig;
             
             Population = new Population<TSpecimen>(trialConfig);
-            GenerationBests = new List<TSpecimen> { Population.GetBest() };
+            Best = Population.GetBest();
             GenerationScores = new List<GenerationScore> { Population.GetScore() };
             Generation = 0;
 
@@ -71,19 +69,8 @@ namespace GeneticAlgorithm
         }
 
         public TSpecimen GetBestEver()
-        {            
-            int bestIndex=0;
-            ulong bestScore = GenerationScores[bestIndex].BestScore;
-            for (int i = 1; i < GenerationScores.Count; i++)
-            {
-                if (GenerationScores[i].BestScore > bestScore)
-                {
-                    bestIndex = i;
-                    bestScore = GenerationScores[i].BestScore;
-                }
-            }
-
-            return GenerationBests[bestIndex];
+        {
+            return Best;
         }
 
         #endregion
@@ -98,7 +85,8 @@ namespace GeneticAlgorithm
 
                 Population.Evolve();
 
-                GenerationBests.Add(Population.GetBest());
+                if (Population.GetBest().Fitness() > Best.Fitness())
+                    Best = Population.GetBest();
                 GenerationScores.Add(Population.GetScore());
                 Generation++;
             }
@@ -138,7 +126,7 @@ namespace GeneticAlgorithm
 
         private void SaveBest()
         {
-            File.WriteAllLines(FilePath("Bests"), GenerationBests.Select(TrialConfig.Stringer.ValueToString));
+            File.WriteAllText(FilePath("Best"), TrialConfig.Stringer.ValueToString(Best));
         }
 
         private string FilePath(string name)

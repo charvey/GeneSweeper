@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -140,11 +141,13 @@ namespace GeneticAlgorithm
 
         private void Order()
         {
-            //int processorCount = Environment.ProcessorCount*8;
+            int processorCount = Environment.ProcessorCount*4;
 
-            //var partitions = Enumerable.Range(0, processorCount).Select(p => _population.Where((s, i) => i%processorCount == p));
+            var partitions = Partitioner.Create(_population);
 
-            //Parallel.ForEach(partitions, p => p.Select(s => s.Fitness()));
+            partitions.AsParallel().Select(s => s.Fitness());
+
+            //_population.AsParallel().Select(s => s.Fitness()).ToArray();
 
             _population = _population.OrderByDescending(s => s.Fitness()).ToArray();
 

@@ -15,20 +15,7 @@ namespace GeneSweeper
     {
         static void Main(string[] args)
         {
-            var ns = new NeighborhoodState(
-                CellState.Edge.Value, CellState.Edge.Value, CellState.Edge.Value,
-                CellState.Edge.Value, CellState.Initial.Value, CellState.Initial.Value,
-                CellState.Edge.Value, CellState.Initial.Value, CellState.Initial.Value);
-
-            Console.WriteLine(ns.Value);
-
-            for (int i = 0; i < int.MaxValue; i++)
-            {
-                if (NeighborhoodState.GetRandom().Value == ns.Value)
-                    Console.WriteLine(i);
-            }
-            Console.ReadLine();
-            //MainMenu();
+            MainMenu();
         }
 
         static void MainMenu()
