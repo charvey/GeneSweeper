@@ -89,6 +89,9 @@ namespace GeneticAlgorithm
                     Best = Population.GetBest();
                 GenerationScores.Add(Population.GetScore());
                 Generation++;
+
+                if (Generation % 100 == 0)
+                    SaveState();
             }
 
             SaveState();

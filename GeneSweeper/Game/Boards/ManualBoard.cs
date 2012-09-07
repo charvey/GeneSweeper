@@ -15,7 +15,7 @@ namespace GeneSweeper.Game.Boards
             throw new NotImplementedException();
         }
 
-        public override ISet<Position> Reveal(Position position)
+        public override List<Position> Reveal(Position position)
         {
             throw new NotImplementedException();
         }

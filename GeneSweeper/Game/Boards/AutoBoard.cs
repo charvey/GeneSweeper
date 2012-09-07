@@ -78,7 +78,7 @@ namespace GeneSweeper.Game.Boards
             }
         }
 
-        private ISet<Position> Reveal(byte r, byte c)
+        private List<Position> Reveal(byte r, byte c)
         {
             /*
             if (_board[r, c].Revealed)
@@ -87,7 +87,7 @@ namespace GeneSweeper.Game.Boards
                 throw new ArgumentException("This position has already been flagged.");
             */
 
-            ISet<Position> revealed = new HashSet<Position> { new Position(r, c) };
+            HashSet<Position> revealed = new HashSet<Position>();
             
             _board[r, c].Revealed = true;
 
@@ -97,16 +97,43 @@ namespace GeneSweeper.Game.Boards
             }
             else if (_board[r, c].Neighbors == 0)
             {
+                /*
+                int rev = 0;
+                revealed.Add(new Position(r,c));
+                int _r, _c;
+                do{
+                    Position p = revealed[rev];
+
+                    for (_r = Math.Max(0, p.Row - 1); _r <= Math.Min(p.Row + 1, CurrentDifficulty.Height - 1); _r++)
+                    {
+                        for (_c = Math.Max(0, p.Column - 1); _c <= Math.Min(p.Column + 1, CurrentDifficulty.Width - 1); _c++)
+                        {
+                            if (!_board[_r, _c].Revealed)
+                            {
+                                _board[_r, _c].Revealed = true;
+                                if (_board[_r, _c].Neighbors == 0)
+                                    revealed.Add(new Position((byte)_r, (byte)_c));
+                            }
+                        }
+                    }
+
+                    rev++;
+                } while(rev<revealed.Count);
+                */
+                
                 foreach (var nCell in NeighboringPositions(r, c))
                 {
                     if (!_board[nCell.Row, nCell.Column].Revealed)
                     {
-                        revealed.UnionWith(Reveal(nCell.Row, nCell.Column));
+                        foreach (var rev in Reveal(nCell.Row, nCell.Column))
+                        {
+                            revealed.Add(rev);
+                        }
                     }
                 }
             }
 
-            return revealed;
+            return revealed.ToList();
         }
 
         #endregion
@@ -128,7 +155,7 @@ namespace GeneSweeper.Game.Boards
             _board[position.Row, position.Column].Flagged = true;
         }
 
-        public override ISet<Position> Reveal(Position position)
+        public override List<Position> Reveal(Position position)
         {
             return Reveal(position.Row,position.Column);
         }

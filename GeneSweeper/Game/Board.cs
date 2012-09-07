@@ -91,7 +91,7 @@ namespace GeneSweeper.Game
 
         public abstract void Flag(Position position);
 
-        public abstract ISet<Position> Reveal(Position position);
+        public abstract List<Position> Reveal(Position position);
 
         public abstract ushort Score();
 
