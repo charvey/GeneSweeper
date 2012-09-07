@@ -40,7 +40,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -65,7 +65,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x64</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
@@ -75,6 +75,10 @@
     <Compile Include="AI\Evolution\CrossoverStrategies\Strategy2.cs" />
     <Compile Include="AI\Evolution\CrossoverStrategies\Strategy3.cs" />
     <Compile Include="AI\Evolution\CrossoverStrategies\Strategy4.cs" />
+    <Compile Include="AI\Evolution\CrossoverStrategies\Strategy5.cs" />
+    <Compile Include="AI\Evolution\MutationStrategies\AddRemoveMutationStrategy.cs" />
+    <Compile Include="AI\Evolution\MutationStrategies\ChangeResultMutationStrategy.cs" />
+    <Compile Include="AI\Evolution\MutationStrategies\IMutationStrategy.cs" />
     <Compile Include="AI\Models\CellState.cs" />
     <Compile Include="AI\Models\Grid.cs" />
     <Compile Include="AI\Models\NeighborhoodState.cs" />

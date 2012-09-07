@@ -1,4 +1,5 @@
 ﻿using GeneSweeper.AI.Evolution.CrossoverStrategies;
+using GeneSweeper.AI.Evolution.MutationStrategies;
 using GeneSweeper.AI.Models;
 using GeneSweeper.Game;
 using GeneSweeper.Game.Boards;
@@ -18,6 +19,7 @@ namespace GeneSweeper.AI.Evolution
         {
             RuleSet = new RuleSet();
 
+            /*
             const int rules = 100000;
 
             byte[] buffer = Random.NextBytes(10 * rules);
@@ -38,6 +40,7 @@ namespace GeneSweeper.AI.Evolution
                                 new CellState(
                                     (byte)(buffer[10 * i + 9] & 63)
                                     )));
+             */
         }
 
         public RuleSetSpecimen(RuleSet ruleSet)
@@ -58,7 +61,7 @@ namespace GeneSweeper.AI.Evolution
 
             _fitness = 0;
 
-            foreach (var i in Enumerable.Range(0,1024))
+            foreach (var i in Enumerable.Range(0,1000))
             {
                 _fitness += SingleFitness();
             }
@@ -74,8 +77,8 @@ namespace GeneSweeper.AI.Evolution
             player.Play();
 
             ulong f = (board.CurrentState == Board.State.Won)
-                          ? 255u
-                          : (board.CurrentState == Board.State.Lost) ? 0u : 63u;
+                          ? 9000000u
+                          : (board.CurrentState == Board.State.Lost) ? 0u : 4u;
             
             byte mines = 0;
             byte positions = 0;
@@ -99,34 +102,27 @@ namespace GeneSweeper.AI.Evolution
                 }
             }
 
+            /*
             f <<= 24;
             f |= ((uint)(player.Reveals << 16));
             f |= ((uint)(mines << 8));
             f |= ((uint)(positions << 0));
+            */
+
+            f += player.Reveals*10000u;
+            f += mines*100u;
+            f += positions;
 
             return f;
         }
 
+        private static IMutationStrategy MutationStrategy = new ChangeResultMutationStrategy();
         public static int mDiff=0;
-        public void Mutate()
+        public void Mutate(double mutationRate)
         {
             int before = RuleSet.Rules.Count;
 
-            int count = RuleSet.Rules.Count;
-
-            bool[] bools = Random.NextBools(count);
-
-            for (int i = 0; i < bools.Length; i++)
-            {
-                if (bools[i])
-                {
-                    RuleSet.Add(Rule.GetRandom());
-                }
-                else
-                {
-                    RuleSet.Remove(RuleSet.Rules.Keys.ElementAt((int) Random.NextDouble()*RuleSet.Rules.Count));
-                }
-            }
+            MutationStrategy.Mutate(this,mutationRate);
 
             int after = RuleSet.Rules.Count;
 
@@ -135,7 +131,7 @@ namespace GeneSweeper.AI.Evolution
             _fitness = null;
         }
 
-        private static ICrossoverStrategy CrossoverStrategy = new Strategy4();
+        private static ICrossoverStrategy CrossoverStrategy = new Strategy5();
         public static int cDiff=0;
         public ISpecimen Crossover(ISpecimen other)
         {

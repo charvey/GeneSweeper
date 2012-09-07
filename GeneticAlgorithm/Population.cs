@@ -134,7 +134,7 @@ namespace GeneticAlgorithm
             {
                 if(Random.NextDouble()<_configuration.MutationRate)
                 {
-                    specimen.Mutate();
+                    specimen.Mutate(_configuration.MutationRate);
                 }
             }
         }
@@ -145,7 +145,8 @@ namespace GeneticAlgorithm
 
             var partitions = Partitioner.Create(_population);
 
-            partitions.AsParallel().Select(s => s.Fitness());
+            //partitions.AsParallel().Select(s => s.Fitness()).ToArray();
+            _population.Select(s => s.Fitness()).ToArray();
 
             //_population.AsParallel().Select(s => s.Fitness()).ToArray();
 

@@ -1,6 +1,8 @@
 ﻿using GeneSweeper.AI;
 using GeneSweeper.AI.Models;
 using GeneSweeper.Game.Boards;
+using System;
+using System.Diagnostics;
 
 namespace GeneSweeper.Game.Players
 {
@@ -53,7 +55,7 @@ namespace GeneSweeper.Game.Players
             {
                 bool halt = Step();
 
-                if (halt || StepsSinceReveal > 1000000)
+                if (halt || StepsSinceReveal > 1000)
                     return;
             }
         }
@@ -69,8 +71,15 @@ namespace GeneSweeper.Game.Players
             }
             else
             {
-                if(_grid.Apply(_ruleSet))
+                //Stopwatch s = new Stopwatch();
+                //s.Restart();
+                if (_grid.Apply(_ruleSet))
+                {
+                    //s.Stop();
+                    //Console.WriteLine("T: "+s.ElapsedMilliseconds);
                     return true;
+                }
+                
             }
             StepsSinceReveal++;
             _step++;

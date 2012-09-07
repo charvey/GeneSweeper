@@ -26,7 +26,7 @@ namespace GeneticAlgorithm
         {
             return (new[] {v.BestScore, v.MeanScore, v.WorstScore})
                 .Concat(v.Percentiles)
-                .Aggregate("", (ag, val) => ag + '\t' + val.ToString("00000000000000"));
+                .Aggregate("", (ag, val) => ag + '\t' + val.ToString("0000000000"));
         }
 
         public GenerationScore StringToValue(string s)

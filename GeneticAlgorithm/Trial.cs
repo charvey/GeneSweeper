@@ -90,7 +90,7 @@ namespace GeneticAlgorithm
                 GenerationScores.Add(Population.GetScore());
                 Generation++;
 
-                if (Generation % 100 == 0)
+                if (Generation % 10 == 0)
                     SaveState();
             }
 

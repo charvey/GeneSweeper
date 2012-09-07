@@ -12,7 +12,7 @@ namespace GeneSweeper.AI.Models
 
         public Rule(NeighborhoodState pattern, CellState result)
         {
-            Value = (pattern.Value << 10) | (((ulong)result.Value) & 63);
+            Value = (pattern.Value) | (((ulong)result.Value) & 63);
         }
 
         public NeighborhoodState Pattern { get { return new NeighborhoodState(Value & (ulong.MaxValue - 1023)); } }

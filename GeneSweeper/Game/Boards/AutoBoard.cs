@@ -86,8 +86,12 @@ namespace GeneSweeper.Game.Boards
             if (_board[r, c].Flagged)
                 throw new ArgumentException("This position has already been flagged.");
             */
+            List<Position> revealed = new List<Position>();
 
-            HashSet<Position> revealed = new HashSet<Position>();
+            if (_board[r, c].Revealed)
+                return revealed;
+
+             revealed.Add(new Position(r,c));
             
             _board[r, c].Revealed = true;
 
@@ -99,7 +103,6 @@ namespace GeneSweeper.Game.Boards
             {
                 /*
                 int rev = 0;
-                revealed.Add(new Position(r,c));
                 int _r, _c;
                 do{
                     Position p = revealed[rev];
@@ -181,8 +184,8 @@ namespace GeneSweeper.Game.Boards
         {
             string str = "";
 
-            str += "   " + Enumerable.Range(0, CurrentDifficulty.Width).Select(c => c/10).Aggregate("", (s, c) => s + c) +'\n';
-            str += "   " + Enumerable.Range(0, CurrentDifficulty.Width).Select(c => c%10).Aggregate("", (s, c) => s + c) +'\n';
+            str += "   " + Enumerable.Range(0, CurrentDifficulty.Width).Select(c => c / 10).Aggregate("", (s, c) => s + c) + " \n";
+            str += "   " + Enumerable.Range(0, CurrentDifficulty.Width).Select(c => c % 10).Aggregate("", (s, c) => s + c) + " \n";
             str += "  ╔" + new string(Enumerable.Repeat('═', CurrentDifficulty.Width).ToArray()) + "╗\n";
 
             for(byte r=0;r<CurrentDifficulty.Height;r++)
